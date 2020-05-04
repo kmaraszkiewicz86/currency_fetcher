@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyFetcherApi.Controllers
 {
@@ -12,6 +13,7 @@ namespace CurrencyFetcherApi.Controllers
         };
 
         [HttpGet]
+        [Authorize]
         public IActionResult Get()
         {
             return Ok(Summaries);
