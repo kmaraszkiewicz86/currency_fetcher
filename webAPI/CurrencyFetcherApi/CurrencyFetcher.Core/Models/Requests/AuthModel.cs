@@ -9,5 +9,10 @@ namespace CurrencyFetcher.Core.Models.Requests
 
         [Required]
         public string Password { get; set; }
+
+        public override string ToString()
+        {
+            return $"Username => {Username}, Password => ******";
+        }
     }
 }

@@ -1,4 +1,3 @@
-using CurrencyFetcher.Core.Helpers;
 using CurrencyFetcherApi.AppStart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,9 +11,9 @@ namespace CurrencyFetcherApi
     {
         public IConfiguration Configuration { get; }
 
-        public Startup()
+        public Startup(IConfiguration configuration)
         {
-            Configuration = ConnectionStringHelper.GetDefaultConfigurationBuild();
+            Configuration = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)

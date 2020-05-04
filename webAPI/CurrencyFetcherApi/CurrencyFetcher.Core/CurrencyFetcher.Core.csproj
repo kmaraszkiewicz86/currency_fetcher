@@ -5,8 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\appsettings.Development.json" Link="appsettings.Development.json" />
-    <Content Include="..\appsettings.json" Link="appsettings.json">
+    <Content Include="..\CurrencyFetcherApi\appsettings.Development.json" Link="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\CurrencyFetcherApi\appsettings.json" Link="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

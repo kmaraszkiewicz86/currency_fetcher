@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CurrencyFetcher.Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,8 @@ namespace CurrencyFetcher.Core.Core
 {
     public class CurrencyDbContext: IdentityDbContext<IdentityUser>
     {
+        public DbSet<Log> Logs { get; set; }
+
         public CurrencyDbContext(DbContextOptions options) : base(options)
         {
         }

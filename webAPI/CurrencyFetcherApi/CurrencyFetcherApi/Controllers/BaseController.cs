@@ -6,11 +6,20 @@ using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Models.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 
 namespace CurrencyFetcherApi.Controllers
 {
-    public abstract class BaseController : ControllerBase
+    public abstract class BaseController<TController> : ControllerBase
+        where TController: ControllerBase
     {
+        protected ILogger<TController> _logger;
+
+        protected BaseController(ILogger<TController> logger)
+        {
+            _logger = logger;
+        }
+
         protected async Task<IActionResult> OnActionAsync(Func<Task<IActionResult>> action)
         {
             try
@@ -24,14 +33,17 @@ namespace CurrencyFetcherApi.Controllers
             }
             catch (NotFoundException err)
             {
+                _logger.LogInformation($"Occurs {nameof(NotFoundException)} with errorMessage => {err.Message}");
                 return NotFound(new CurrencyErrorModel(err.Message));
             }
             catch (BadRequestException err)
             {
+                _logger.LogInformation($"Occurs {nameof(BadRequestException)} with errorMessage => {err.Message}");
                 return BadRequest(new CurrencyErrorModel(err.Message));
             }
             catch (Exception err)
             {
+                _logger.LogInformation($"Occurs {nameof(Exception)} with errorMessage => {err.Message}");
                 return BadRequest(new CurrencyErrorModel(err.Message));
             }
         }

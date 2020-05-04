@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace CurrencyFetcher.Core.Models.Requests
 {
@@ -14,5 +15,12 @@ namespace CurrencyFetcher.Core.Models.Requests
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public override string ToString()
+        {
+            return $"CurrencyCodes => {string.Join(',', CurrencyCodes.Select(c => $"{c.Key}: {c.Value}"))}" +
+                   $"StartDate => {StartDate:yyyy-MM-dd}" +
+                   $"EndDate => {(EndDate.HasValue ? EndDate.Value.ToString("yyyy-MM-dd") : "empty")}";
+        }
     }
 }
