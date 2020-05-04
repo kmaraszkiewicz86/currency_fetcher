@@ -1,22 +1,27 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using CurrencyFetcher.Core.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CurrencyFetcherApi.Controllers
 {
     [ApiController]
     [Route("api/Currency")]
-    public class CurrencyController : ControllerBase
+    public class CurrencyController : BaseController
     {
-        private static readonly string[] Summaries = new[]
+        private ICurrencyGetterService _currencyGetterService;
+
+        public CurrencyController(ICurrencyGetterService currencyGetterService)
         {
-            "USD", "PLN", "EUR"
-        };
+            _currencyGetterService = currencyGetterService;
+        }
 
         [HttpGet]
         [Authorize]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(Summaries);
+            return await OnActionAsync(async () => 
+                Ok(await _currencyGetterService.GetAllAsync()));
         }
     }
 }
