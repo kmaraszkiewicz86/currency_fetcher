@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-using System.Xml;
 using CurrencyFetcher.Core.Exceptions;
-using CurrencyFetcher.Core.Models.Responses;
+using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Services.Interfaces;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
     public class CurrencyGetterService: ICurrencyGetterService
     {
-        public async Task<IEnumerable<CurrencyResult>> GetAllAsync()
+        private const string ApiHostUrl = "https://sdw-wsrest.ecb.europa.eu";
+
+        public async Task<string> FetchData(CurrencyModel model)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -18,8 +18,11 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
                 try
                 {
+                    var startDate = model.StartDate;
+                    var endDate = model.EndDate.HasValue ? model.EndDate : model.StartDate; 
+
                     HttpResponseMessage response = await client.GetAsync(
-                        "https://sdw-wsrest.ecb.europa.eu/service/data/EXR/D.PLN.EUR.SP00.A?startPeriod=2009-05-01&endPeriod=2009-05-31&details=serieskeysonly");
+                        $"{ApiHostUrl}/service/data/EXR/D.{model.Currency}.{model.CurrencyToMatch}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly");
                     
                     response.EnsureSuccessStatusCode();
 
@@ -31,29 +34,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                     throw new BadRequestException($"Message :{e.Message}");
                 }
 
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(responseBodyInString);
-
-                var items = doc.GetElementsByTagName("message:GenericData")[0]
-                    .OwnerDocument.GetElementsByTagName("message:DataSet")[0]
-                    .OwnerDocument.GetElementsByTagName("generic:Obs");
-
-                var currencyResults = new List<CurrencyResult>();
-
-                foreach (XmlElement item in items)
-                {
-                    currencyResults.Add(new CurrencyResult
-                    {
-                        CurrencyBeingMeasured = "PLN",
-                        CurrencyMatched = "EUR",
-                        CurrencyValue = item.OwnerDocument.GetElementsByTagName("generic:ObsValue")[0].Attributes[0]
-                            .Value,
-                        DailyDataOfCurrency = item.OwnerDocument.GetElementsByTagName("generic:ObsDimension")[0]
-                            .Attributes[0].Value
-                    });
-                }
-
-                return currencyResults;
+                return responseBodyInString;
             }
         }
     }

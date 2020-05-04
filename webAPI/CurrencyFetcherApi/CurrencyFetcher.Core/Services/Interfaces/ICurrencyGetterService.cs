@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using CurrencyFetcher.Core.Models.Responses;
+﻿using System.Threading.Tasks;
+using CurrencyFetcher.Core.Models;
 
 namespace CurrencyFetcher.Core.Services.Interfaces
 {
     public interface ICurrencyGetterService
     {
-        public Task<IEnumerable<CurrencyResult>> GetAllAsync();
+        public Task<string> FetchData(CurrencyModel model);
     }
 }

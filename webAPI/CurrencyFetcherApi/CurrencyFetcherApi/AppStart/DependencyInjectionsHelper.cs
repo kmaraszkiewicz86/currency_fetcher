@@ -11,6 +11,9 @@ namespace CurrencyFetcherApi.AppStart
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICurrencyGetterService, CurrencyGetterService>();
+            services.AddScoped<IXmlReader, XmlReader>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<IDateChecker, DateChecker>();
 
             return services;
         }
