@@ -1,6 +1,7 @@
 ﻿using System;
 using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Services.Interfaces;
+using Nager.Date;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
@@ -10,6 +11,16 @@ namespace CurrencyFetcher.Core.Services.Implementations
         {
             var startDateTmp = startDate;
             var endDateTmp = endDate ?? startDate;
+
+            while (true)
+            {
+                if (!DateSystem.IsPublicHoliday(startDateTmp, CountryCode.PL) && !DateSystem.IsWeekend(startDateTmp, CountryCode.PL))
+                {
+                    break;
+                }
+
+                startDateTmp = startDateTmp.AddDays(-1);
+            }
 
             return (startDateTmp, endDateTmp);
         }
