@@ -22,7 +22,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                     var endDate = model.EndDate.HasValue ? model.EndDate : model.StartDate; 
 
                     HttpResponseMessage response = await client.GetAsync(
-                        $"{ApiHostUrl}/service/data/EXR/D.{model.Currency}.{model.CurrencyToMatch}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly");
+                        $"{ApiHostUrl}/service/data/EXR/D.{model.CurrencyBeingMeasured}.{model.CurrencyMatched}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly");
                     
                     response.EnsureSuccessStatusCode();
 

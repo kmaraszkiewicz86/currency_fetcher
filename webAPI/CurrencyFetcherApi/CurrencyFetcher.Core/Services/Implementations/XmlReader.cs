@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Models.Responses;
@@ -30,10 +32,10 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
                 currencyResults.Add(new CurrencyResult
                 {
-                    CurrencyBeingMeasured = model.Currency,
-                    CurrencyMatched = model.CurrencyToMatch,
-                    CurrencyValue = currencyValueXmlElement.Attributes[0].Value,
-                    DailyDataOfCurrency = currencyDateXmlElement.Attributes[0].Value
+                    CurrencyBeingMeasured = model.CurrencyBeingMeasured,
+                    CurrencyMatched = model.CurrencyMatched,
+                    CurrencyValue = decimal.Parse(currencyValueXmlElement.Attributes[0].Value, CultureInfo.InvariantCulture),
+                    DailyDataOfCurrency = DateTime.Parse(currencyDateXmlElement.Attributes[0].Value)
                 });
             }
 

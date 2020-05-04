@@ -10,9 +10,9 @@ namespace CurrencyFetcher.Core.Models.Responses
 
         public string CurrencyMatched { get; set; }
 
-        public string CurrencyValue { get; set; }
+        public decimal CurrencyValue { get; set; }
 
-        public string DailyDataOfCurrency { get; set; }
+        public DateTime DailyDataOfCurrency { get; set; }
 
     }
 }

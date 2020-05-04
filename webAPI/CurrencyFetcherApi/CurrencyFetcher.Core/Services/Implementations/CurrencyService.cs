@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Models.Requests;
@@ -13,12 +14,14 @@ namespace CurrencyFetcher.Core.Services.Implementations
         private readonly ICurrencyGetterService _currencyGetterService;
         private readonly IXmlReader _xmlReader;
         private readonly IDateChecker _dateChecker;
+        private readonly ICacheDatabase _cacheDatabase;
 
-        public CurrencyService(ICurrencyGetterService currencyGetterService, IXmlReader xmlReader, IDateChecker dateChecker)
+        public CurrencyService(ICurrencyGetterService currencyGetterService, IXmlReader xmlReader, IDateChecker dateChecker, ICacheDatabase cacheDatabase)
         {
             _currencyGetterService = currencyGetterService;
             _xmlReader = xmlReader;
             _dateChecker = dateChecker;
+            _cacheDatabase = cacheDatabase;
         }
 
         public async Task<IEnumerable<CurrencyResult>> GetCurrencyResults(CurrencyCollectionModel collectionModel)
@@ -34,11 +37,29 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
             foreach (KeyValuePair<string, string> currencyCode in collectionModel.CurrencyCodes)
             {
-                currencyModel.Currency = currencyCode.Key;
-                currencyModel.CurrencyToMatch = currencyCode.Value;
+                currencyModel.CurrencyBeingMeasured = currencyCode.Key;
+                currencyModel.CurrencyMatched = currencyCode.Value;
 
-                var xmlBody = await _currencyGetterService.FetchData(currencyModel);
-                currencyModels.AddRange(_xmlReader.GetCurrencyResults(currencyModel, xmlBody));
+                List<CurrencyResult> currencyResults = _cacheDatabase.GetAsync(currencyModel).Select(c => new CurrencyResult
+                {
+                    CurrencyBeingMeasured = c.Currency.CurrencyBeingMeasured,
+                    CurrencyMatched = c.Currency.CurrencyMatched,
+                    CurrencyValue = c.Value,
+                    DailyDataOfCurrency = c.DailyDataOfCurrency
+                }).ToList();
+
+                if (currencyResults.Count == 0)
+                {
+                    var xmlBody = await _currencyGetterService.FetchData(currencyModel);
+                    currencyResults = _xmlReader.GetCurrencyResults(currencyModel, xmlBody).ToList();
+
+                    foreach (var currencyResult in currencyResults)
+                    {
+                        await _cacheDatabase.SaveAsync(currencyResult);
+                    }
+                }
+
+                currencyModels.AddRange(currencyResults);
             }
 
             return currencyModels;

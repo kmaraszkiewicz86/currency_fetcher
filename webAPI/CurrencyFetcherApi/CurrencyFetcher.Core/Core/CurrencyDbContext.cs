@@ -9,12 +9,20 @@ namespace CurrencyFetcher.Core.Core
     {
         public DbSet<Log> Logs { get; set; }
 
+        public DbSet<Currency> Currencies { get; set; }
+
+        public DbSet<CurrencyValue> CurrencyValues { get; set; }
+
         public CurrencyDbContext(DbContextOptions options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Currency>()
+                .HasIndex(c => new {c.CurrencyBeingMeasured, c.CurrencyMatched})
+                .IsUnique();
+
             builder.Entity<IdentityUser>().HasData(
                 new IdentityUser
                 {

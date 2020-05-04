@@ -4,9 +4,9 @@ namespace CurrencyFetcher.Core.Models
 {
     public class CurrencyModel
     {
-        public string Currency { get; set; }
+        public string CurrencyBeingMeasured { get; set; }
 
-        public string CurrencyToMatch { get; set; }
+        public string CurrencyMatched { get; set; }
 
         public DateTime StartDate { get; set; }
 

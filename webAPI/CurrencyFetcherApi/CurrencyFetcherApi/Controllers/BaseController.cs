@@ -44,7 +44,7 @@ namespace CurrencyFetcherApi.Controllers
             catch (Exception err)
             {
                 _logger.LogInformation($"Occurs {nameof(Exception)} with errorMessage => {err.Message}");
-                return BadRequest(new CurrencyErrorModel(err.Message));
+                return BadRequest(new CurrencyErrorModel("An unknown error occurs. Please contact to system administrator."));
             }
         }
 
