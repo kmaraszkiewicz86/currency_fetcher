@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace CurrencyFetcherApi
 {
@@ -29,6 +30,8 @@ namespace CurrencyFetcherApi
             services.AddDefaultDbContext();
 
             services.ConfigureJwtBearer(appSettings, jwtSettings);
+
+            services.ConfigureSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,6 +41,8 @@ namespace CurrencyFetcherApi
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
             }
+
+            app.UseSwaggerFunctionality();
 
             app.UseHttpsRedirection();
 
