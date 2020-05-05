@@ -14,6 +14,10 @@ To set up web service read below informations:
 * [CurrencyFetcherApi.Tests] - Unit tests project for CurrencyFetcherApi project
 * [CurrencyFetcher.Core] - Core project contains Services, model, entities, db context classes
 * [CurrencyFetcher.Core.Tests] - Unit tests project for CurrencyFetcher.Core project
+* [CurrencyFetcher.Core.Tests] - Unit tests project for CurrencyFetcher.Core project
+* [CurrencyFetcherApi.IntegrationTests] - Project with integration and performance tests
+* [IntegrationTests] - TextFixture of integrations tests
+* [PerformanceTests] - TextFixture of performance tests
 
 ### Installation
 
@@ -163,5 +167,8 @@ apache 2.0
    [CurrencyFetcherApi.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.Tests>
    [CurrencyFetcher.Core]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcher.Core>
    [CurrencyFetcher.Core.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcher.Core.Tests>
+   [CurrencyFetcherApi.IntegrationTests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.IntegrationTests>
+    [PerformanceTests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.IntegrationTests/CurrencyFetcherApi.IntegrationTests/Tests/CurrencyPerformanceTests.cs>
+    [IntegrationTests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.IntegrationTests/CurrencyFetcherApi.IntegrationTests/Tests/CurrencyIntegrationsTests.cs>
    [appsettings]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/CurrencyFetcherApi/appsettings.json>
 
