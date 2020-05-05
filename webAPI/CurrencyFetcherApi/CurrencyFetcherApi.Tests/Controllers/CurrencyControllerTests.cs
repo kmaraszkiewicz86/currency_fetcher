@@ -90,6 +90,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
 
+            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
+
             okResult.Value.As<IEnumerable<CurrencyResult>>().Should().BeEmpty();
 
         }
@@ -104,6 +106,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
+
+            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
 
             okResult.Value.As<IEnumerable<CurrencyResult>>().ToList().Should().NotBeNullOrEmpty();
             okResult.Value.As<IEnumerable<CurrencyResult>>().ToList().Should().BeEquivalentTo(_expectedResult);
@@ -139,6 +143,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
             result.Should().BeOfType<TObjectResult>();
             var errorResponse = result as TObjectResult;
+
+            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
 
             errorResponse.Value.As<CurrencyErrorModel>().Should().NotBeNull();
             errorResponse.Value.As<CurrencyErrorModel>().Should().BeEquivalentTo(errorModel ?? _errorModel);

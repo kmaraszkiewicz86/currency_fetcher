@@ -50,6 +50,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
 
+            _userServiceMock.Verify(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+
             okResult.Value.As<TokenModel>().Should().NotBeNull();
             okResult.Value.As<TokenModel>().Should().BeEquivalentTo(ExpectedResult);
         }
@@ -64,6 +66,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
             result.Should().BeOfType<BadRequestObjectResult>();
             var okResult = result as BadRequestObjectResult;
+
+            _userServiceMock.Verify(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
             okResult.Value.As<CurrencyErrorModel>().Should().NotBeNull();
             okResult.Value.As<CurrencyErrorModel>().Should().BeEquivalentTo(new CurrencyErrorModel("Username or Password is invalid"));
