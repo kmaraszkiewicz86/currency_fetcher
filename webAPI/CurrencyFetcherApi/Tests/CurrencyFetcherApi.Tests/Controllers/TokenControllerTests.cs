@@ -40,7 +40,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         }
 
         [Test]
-        public void TokenController_SendValidCredentials_ReturnsToken()
+        public void Login_SendValidCredentials_ReturnsToken()
         {
             _userServiceMock.Setup(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(ExpectedResult));
@@ -57,7 +57,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         }
 
         [Test]
-        public void TokenController_SendInvalidCredentials_ReturnsBadRequest()
+        public void Login_SendInvalidCredentials_ReturnsBadRequest()
         {
             _userServiceMock.Setup(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<TokenModel>(null));

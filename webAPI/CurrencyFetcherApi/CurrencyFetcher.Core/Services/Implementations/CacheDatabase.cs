@@ -85,7 +85,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                     c.Currency.CurrencyBeingMeasured == model.CurrencyBeingMeasured &&
                     c.Currency.CurrencyMatched == model.CurrencyMatched);
 
-            if (results.Max(r => r.DailyDataOfCurrency) != endDate)
+            if (!results.Any() || results.Max(r => r.DailyDataOfCurrency) != endDate)
             {
                 return new List<CurrencyValue>();
             }

@@ -80,7 +80,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         }
 
         [Test]
-        public void CurrencyControllerTests_SendValidData_ResultEmptyList()
+        public void Get_SendValidData_ResultEmptyList()
         {
             _currencyServiceMock.Setup(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()))
                 .Returns(Task.FromResult(new List<CurrencyResult>() as IEnumerable<CurrencyResult>));
@@ -97,7 +97,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         }
 
         [Test]
-        public void CurrencyControllerTests_SendValidData_ResultNotEmptyList()
+        public void Get_SendValidData_ResultNotEmptyList()
         {
             _currencyServiceMock.Setup(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()))
                 .Returns(Task.FromResult(_expectedResult));
@@ -115,19 +115,19 @@ namespace CurrencyFetcherApi.Tests.Controllers
         }
 
         [Test]
-        public void CurrencyControllerTests_SendValidData_ReturnsBadResponse()
+        public void Get_SendValidData_ReturnsBadResponse()
         {
             CheckErrorMessageResponse<BadRequestObjectResult>(() => throw new BadRequestException(ErrorMessage));
         }
 
         [Test]
-        public void CurrencyControllerTests_SendValidData_ReturnsNotFoundResponse()
+        public void Get_SendValidData_ReturnsNotFoundResponse()
         {
             CheckErrorMessageResponse<NotFoundObjectResult>(() => throw new NotFoundException(ErrorMessage));
         }
 
         [Test]
-        public void CurrencyControllerTests_SendValidData_ThrowsUnknownError()
+        public void Get_SendValidData_ThrowsUnknownError()
         {
             CheckErrorMessageResponse<BadRequestObjectResult>(() => throw new Exception(ErrorMessage),
                 new CurrencyErrorModel("An unknown error occurs. Please contact to system administrator."));

@@ -5,6 +5,6 @@ namespace CurrencyFetcher.Core.Services.Interfaces
 {
     public interface ICurrencyGetterService
     {
-        public Task<string> FetchData(CurrencyModel model);
+        public Task<string> FetchDataAsync(CurrencyModel model);
     }
 }

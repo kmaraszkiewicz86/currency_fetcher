@@ -30,13 +30,18 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 var currencyValueXmlElement = currencyValueXmlElements[index];
                 var currencyDateXmlElement = currencyDateXmlElements[index];
 
-                currencyResults.Add(new CurrencyResult
+                //if generic:ObsValue == NaN skip that value
+                if (decimal.TryParse(currencyValueXmlElement.Attributes[0].Value, NumberStyles.Currency, CultureInfo.InvariantCulture, out var currencyValue) &&
+                    DateTime.TryParse(currencyDateXmlElement.Attributes[0].Value, out var dailyDataOfCurrency))
                 {
-                    CurrencyBeingMeasured = model.CurrencyBeingMeasured,
-                    CurrencyMatched = model.CurrencyMatched,
-                    CurrencyValue = decimal.Parse(currencyValueXmlElement.Attributes[0].Value, CultureInfo.InvariantCulture),
-                    DailyDataOfCurrency = DateTime.Parse(currencyDateXmlElement.Attributes[0].Value)
-                });
+                    currencyResults.Add(new CurrencyResult
+                    {
+                        CurrencyBeingMeasured = model.CurrencyBeingMeasured,
+                        CurrencyMatched = model.CurrencyMatched,
+                        CurrencyValue = currencyValue,
+                        DailyDataOfCurrency = dailyDataOfCurrency
+                    });
+                }
             }
 
             return currencyResults;

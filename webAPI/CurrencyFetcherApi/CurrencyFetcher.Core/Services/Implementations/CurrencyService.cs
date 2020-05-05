@@ -16,7 +16,8 @@ namespace CurrencyFetcher.Core.Services.Implementations
         private readonly IDateChecker _dateChecker;
         private readonly ICacheDatabase _cacheDatabase;
 
-        public CurrencyService(ICurrencyGetterService currencyGetterService, IXmlReader xmlReader, IDateChecker dateChecker, ICacheDatabase cacheDatabase)
+        public CurrencyService(ICurrencyGetterService currencyGetterService, IXmlReader xmlReader, IDateChecker dateChecker, 
+            ICacheDatabase cacheDatabase)
         {
             _currencyGetterService = currencyGetterService;
             _xmlReader = xmlReader;
@@ -30,7 +31,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
             var currencyModel = new CurrencyModel();
 
             _dateChecker.ValidateDate(collectionModel.StartDate, collectionModel.EndDate);
-            (DateTime StartDate, DateTime EndDate) dateItems = _dateChecker.SetCurrentDate(collectionModel.StartDate, collectionModel.EndDate);
+            (DateTime StartDate, DateTime EndDate) dateItems = _dateChecker.SetCorrectDate(collectionModel.StartDate, collectionModel.EndDate);
 
             currencyModel.StartDate = dateItems.StartDate;
             currencyModel.EndDate = dateItems.EndDate;
@@ -50,7 +51,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
                 if (currencyResults.Count == 0)
                 {
-                    var xmlBody = await _currencyGetterService.FetchData(currencyModel);
+                    var xmlBody = await _currencyGetterService.FetchDataAsync(currencyModel);
                     currencyResults = _xmlReader.GetCurrencyResults(currencyModel, xmlBody).ToList();
 
                     foreach (var currencyResult in currencyResults)

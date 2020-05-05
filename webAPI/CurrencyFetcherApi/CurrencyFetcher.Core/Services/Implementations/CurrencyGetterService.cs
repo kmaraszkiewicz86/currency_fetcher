@@ -10,7 +10,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
     {
         private const string ApiHostUrl = "https://sdw-wsrest.ecb.europa.eu";
 
-        public async Task<string> FetchData(CurrencyModel model)
+        public async Task<string> FetchDataAsync(CurrencyModel model)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -31,7 +31,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 }
                 catch (HttpRequestException e)
                 {
-                    throw new BadRequestException($"Message :{e.Message}");
+                    throw new BadRequestException($"Message: {e.Message}");
                 }
 
                 return responseBodyInString;

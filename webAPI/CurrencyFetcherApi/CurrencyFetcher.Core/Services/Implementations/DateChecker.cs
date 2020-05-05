@@ -13,10 +13,10 @@ namespace CurrencyFetcher.Core.Services.Implementations
             _holidayChecker = holidayChecker;
         }
 
-        public (DateTime StartDate, DateTime EndDate) SetCurrentDate(DateTime startDate, DateTime? endDate)
+        public (DateTime StartDate, DateTime EndDate) SetCorrectDate(DateTime startDate, DateTime? endDate)
         {
             var startDateTmp = _holidayChecker.ReturnDateBeforeDayOff(startDate);
-            var endDateTmp = endDate ?? startDate;
+            var endDateTmp = endDate ?? startDateTmp;
 
             return (startDateTmp, endDateTmp);
         }
