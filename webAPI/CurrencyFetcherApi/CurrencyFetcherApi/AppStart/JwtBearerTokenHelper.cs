@@ -7,8 +7,18 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CurrencyFetcherApi.AppStart
 {
+    /// <summary>
+    /// Helper for configure JSON web token feature
+    /// </summary>
     public static class JwtBearerTokenHelper
     {
+        /// <summary>
+        /// Configure JSON web token feature
+        /// </summary>
+        /// <param name="services"><seealso cref="IServiceCollection"/></param>
+        /// <param name="appSettings"><seealso cref="AppSettings"/></param>
+        /// <param name="jwtSettings"><seealso cref="JwtSettings"/></param>
+        /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection ConfigureJwtBearer(this IServiceCollection services, AppSettings appSettings,
             JwtSettings jwtSettings)
         {

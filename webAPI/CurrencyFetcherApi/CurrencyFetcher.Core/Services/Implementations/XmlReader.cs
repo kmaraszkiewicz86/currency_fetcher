@@ -8,8 +8,17 @@ using CurrencyFetcher.Core.Services.Interfaces;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
+    /// <summary>
+    /// Handles xmlBody into <see cref="IEnumerable{CurrencyResult}"/> list
+    /// </summary>
     public class XmlReader: IXmlReader
     {
+        /// <summary>
+        /// Get currency information from web service result string
+        /// </summary>
+        /// <param name="model"><seealso cref="CurrencyModel"/></param>
+        /// <param name="xmlBody">XmlBody fetched from web api</param>
+        /// <returns></returns>
         public IEnumerable<CurrencyResult> GetCurrencyResults(CurrencyModel model, string xmlBody)
         {
             var currencyResults = new List<CurrencyResult>();

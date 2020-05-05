@@ -11,13 +11,13 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
     public class DateCheckerTests
     {
         private Mock<IHolidayChecker> _holidayChecker;
-        private DateChecker _dateChecker;
+        private DateService _dateChecker;
 
         [SetUp]
         public void SetUp()
         {
             _holidayChecker = new Mock<IHolidayChecker>();
-            _dateChecker = new DateChecker(_holidayChecker.Object);
+            _dateChecker = new DateService(_holidayChecker.Object);
         }
 
         [Test]

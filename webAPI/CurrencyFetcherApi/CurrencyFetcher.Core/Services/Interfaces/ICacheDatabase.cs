@@ -7,10 +7,23 @@ using CurrencyFetcher.Core.Models.Responses;
 
 namespace CurrencyFetcher.Core.Services.Interfaces
 {
+    /// <summary>
+    /// Caches currency information in database
+    /// </summary>
     public interface ICacheDatabase
     {
+        /// <summary>
+        /// Saves <see cref="CurrencyModel"/> into database
+        /// </summary>
+        /// <param name="result"><see cref="CurrencyModel"/></param>
+        /// <returns></returns>
         Task SaveAsync(CurrencyResult result);
 
+        /// <summary>
+        /// Get caches data from database
+        /// </summary>
+        /// <param name="model"><see cref="CurrencyModel"/></param>
+        /// <returns><see cref="IEnumerable{CurrencyValue}"/></returns>
         IEnumerable<CurrencyValue> GetAsync(CurrencyModel model);
     }
 }

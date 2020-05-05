@@ -10,16 +10,32 @@ using Microsoft.Extensions.Logging;
 
 namespace CurrencyFetcherApi.Controllers
 {
+    /// <summary>
+    /// Global constructor has shared method for process errors
+    /// </summary>
+    /// <typeparam name="TController"></typeparam>
     public abstract class BaseController<TController> : ControllerBase
         where TController: ControllerBase
     {
+        /// <summary>
+        /// <see cref="ILogger{TConroller}"/>
+        /// </summary>
         protected ILogger<TController> _logger;
 
+        /// <summary>
+        /// Creates instance of class
+        /// </summary>
+        /// <param name="logger"><see cref="ILogger{TConroller}"/></param>
         protected BaseController(ILogger<TController> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Method that to handle errors from services
+        /// </summary>
+        /// <param name="action"><see cref="Func{Task{IActionResult}}"/></param>
+        /// <returns><see cref="Task{IActionResult}"/></returns>
         protected async Task<IActionResult> OnActionAsync(Func<Task<IActionResult>> action)
         {
             try
@@ -48,6 +64,10 @@ namespace CurrencyFetcherApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Get error from <see cref="ModelStateDictionary"/>
+        /// </summary>
+        /// <returns>return list of errors in <seealso cref="List{string}"/></returns>
         private List<string> ValidateModelState()
         {
             var errorMessages = new List<string>();

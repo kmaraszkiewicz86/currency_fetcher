@@ -6,8 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CurrencyFetcherApi.AppStart
 {
+    /// <summary>
+    /// Configures database context
+    /// </summary>
     public static class DbContextHelper
     {
+        /// <summary>
+        /// Configures database context
+        /// </summary>
+        /// <param name="services"><seealso cref="IServiceCollection"/></param>
+        /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddDefaultDbContext(this IServiceCollection services)
         {
             services.AddDbContext<CurrencyDbContext>(options =>

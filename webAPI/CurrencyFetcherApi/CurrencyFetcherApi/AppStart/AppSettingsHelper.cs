@@ -4,8 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CurrencyFetcherApi.AppStart
 {
-    public static class AppSettingsHelper
+    /// <summary>
+    /// Configures data from appsettings into models
+    /// </summary>
+    public static class OptionsSettingsHelper
     {
+        /// <summary>
+        /// Configures data from appsettings into <seealso cref="AppSettings"/> model
+        /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="configuration"><seealso cref="IConfiguration"/></param>
+        /// <returns><seealso cref="AppSettings"/></returns>
         public static AppSettings ConfigureAppSettingsOptions(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
@@ -15,6 +24,12 @@ namespace CurrencyFetcherApi.AppStart
             return appSettingsSection.Get<AppSettings>();
         }
 
+        /// <summary>
+        /// Configures data from appsettings into <seealso cref="JwtSettings"/> model
+        /// </summary>
+        /// <param name="services"><see cref="IServiceCollection"/></param>
+        /// <param name="configuration"><seealso cref="IConfiguration"/></param>
+        /// <returns><seealso cref="JwtSettings"/></returns>
         public static JwtSettings ConfigureJwtSettingsOptions(this IServiceCollection services, IConfiguration configuration)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");

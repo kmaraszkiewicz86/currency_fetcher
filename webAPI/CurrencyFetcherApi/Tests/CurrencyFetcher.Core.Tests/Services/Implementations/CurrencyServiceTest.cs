@@ -19,7 +19,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
     {
         private readonly Mock<ICurrencyGetterService> _currencyGetterServiceMock;
         private readonly Mock<IXmlReader> _xmlReaderMock;
-        private readonly Mock<IDateChecker> _dateCheckerMock;
+        private readonly Mock<IDateService> _dateCheckerMock;
         private readonly Mock<ICacheDatabase> _cacheDatabaseMock;
 
         private readonly CurrencyService _currencyService;
@@ -28,7 +28,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
         {
             _currencyGetterServiceMock = new Mock<ICurrencyGetterService>();
             _xmlReaderMock = new Mock<IXmlReader>();
-            _dateCheckerMock = new Mock<IDateChecker>();
+            _dateCheckerMock = new Mock<IDateService>();
             _cacheDatabaseMock = new Mock<ICacheDatabase>();
 
             _currencyService = new CurrencyService(_currencyGetterServiceMock.Object,

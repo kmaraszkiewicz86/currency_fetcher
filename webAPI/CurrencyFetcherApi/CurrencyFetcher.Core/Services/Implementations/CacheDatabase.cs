@@ -7,21 +7,40 @@ using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Models.Responses;
 using CurrencyFetcher.Core.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Nager.Date;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
+    /// <summary>
+    /// Caches currency information in database
+    /// </summary>
     public class CacheDatabase : ICacheDatabase
     {
+        /// <summary>
+        /// <see cref="CurrencyDbContext"/>
+        /// </summary>
         private readonly CurrencyDbContext _dbContext;
+
+        /// <summary>
+        /// <see cref="IHolidayChecker"/>
+        /// </summary>
         private readonly IHolidayChecker _holidayChecker;
 
+        /// <summary>
+        /// Creates instance of class
+        /// </summary>
+        /// <param name="dbContext"><see cref="CurrencyDbContext"/></param>
+        /// <param name="holidayChecker"><see cref="IHolidayChecker"/></param>
         public CacheDatabase(CurrencyDbContext dbContext, IHolidayChecker holidayChecker)
         {
             _dbContext = dbContext;
             _holidayChecker = holidayChecker;
         }
 
+        /// <summary>
+        /// Saves <see cref="CurrencyModel"/> into database
+        /// </summary>
+        /// <param name="result"><see cref="CurrencyModel"/></param>
+        /// <returns></returns>
         public async Task SaveAsync(CurrencyResult result)
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
@@ -75,6 +94,11 @@ namespace CurrencyFetcher.Core.Services.Implementations
             }
         }
 
+        /// <summary>
+        /// Get caches data from database
+        /// </summary>
+        /// <param name="model"><see cref="CurrencyModel"/></param>
+        /// <returns><see cref="IEnumerable{CurrencyValue}"/></returns>
         public IEnumerable<CurrencyValue> GetAsync(CurrencyModel model)
         {
             var endDate = _holidayChecker.ReturnDateBeforeDayOff(model.EndDate ?? model.StartDate);
