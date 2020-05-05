@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CurrencyFetcher.Core\CurrencyFetcher.Core.csproj" />
-    <ProjectReference Include="..\CurrencyFetcherApi\CurrencyFetcherApi.csproj" />
+    <ProjectReference Include="..\..\CurrencyFetcher.Core\CurrencyFetcher.Core.csproj" />
+    <ProjectReference Include="..\..\CurrencyFetcherApi\CurrencyFetcherApi.csproj" />
   </ItemGroup>
 
 </Project>

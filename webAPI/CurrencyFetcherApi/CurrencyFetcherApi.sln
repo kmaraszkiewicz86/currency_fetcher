@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyFetcherApi", "CurrencyFetcherApi\CurrencyFetcherApi.csproj", "{62BF4ADA-4422-4873-9CB0-A556214D609B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyFetcherApi.Tests", "CurrencyFetcherApi.Tests\CurrencyFetcherApi.Tests.csproj", "{A1A7DA9E-C4EC-466C-A2BF-A01E81B3ECEE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyFetcher.Core", "CurrencyFetcher.Core\CurrencyFetcher.Core.csproj", "{9CB28411-DB16-4F84-9285-58D947F6661E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0145FAF8-1C44-437C-8277-11EEDAF70BB6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyFetcherApi.Tests", "Tests\CurrencyFetcherApi.Tests\CurrencyFetcherApi.Tests.csproj", "{DFAE1235-0516-4C29-B1F7-178E1F44D0BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,17 +21,20 @@ Global
 		{62BF4ADA-4422-4873-9CB0-A556214D609B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62BF4ADA-4422-4873-9CB0-A556214D609B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62BF4ADA-4422-4873-9CB0-A556214D609B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A1A7DA9E-C4EC-466C-A2BF-A01E81B3ECEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A1A7DA9E-C4EC-466C-A2BF-A01E81B3ECEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A1A7DA9E-C4EC-466C-A2BF-A01E81B3ECEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A1A7DA9E-C4EC-466C-A2BF-A01E81B3ECEE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9CB28411-DB16-4F84-9285-58D947F6661E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9CB28411-DB16-4F84-9285-58D947F6661E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CB28411-DB16-4F84-9285-58D947F6661E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CB28411-DB16-4F84-9285-58D947F6661E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFAE1235-0516-4C29-B1F7-178E1F44D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFAE1235-0516-4C29-B1F7-178E1F44D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFAE1235-0516-4C29-B1F7-178E1F44D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFAE1235-0516-4C29-B1F7-178E1F44D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFAE1235-0516-4C29-B1F7-178E1F44D0BC} = {0145FAF8-1C44-437C-8277-11EEDAF70BB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28EC17BF-7719-4BFD-AC41-2DCF71E4327A}
