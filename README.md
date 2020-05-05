@@ -8,6 +8,13 @@ Currency Fetcher is Web API project to fetch data from https://sdw-wsrest.ecb.eu
 
 To set up web service read below informations:
 
+### Project code overview
+
+* [CurrencyFetcherApi] - Main project contains web api controllers
+* [CurrencyFetcherApi.Tests] - Unit tests project for CurrencyFetcherApi project
+* [CurrencyFetcher.Core] - Core project contains Services, model, entities, db context classes
+* [CurrencyFetcher.Core.Tests] - Unit tests project for CurrencyFetcher.Core project
+
 ### Installation
 
 1. To set up web service change connection strings value in localizations:
@@ -96,7 +103,6 @@ License
 ----
 apache 2.0
 
-
 **Free Software, Hell Yeah!**
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
@@ -110,3 +116,7 @@ apache 2.0
    [nUnit]: <https://nunit.org/>
    [Moq]: <https://www.nuget.org/packages/moq/>
    [Swagger]: <https://swagger.io/>
+   [CurrencyFetcherApi]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcherApi>
+   [CurrencyFetcherApi.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.Tests>
+   [CurrencyFetcher.Core]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcher.Core>
+   [CurrencyFetcher.Core.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcher.Core.Tests>
