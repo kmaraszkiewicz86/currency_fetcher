@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Services.Interfaces;
 using Microsoft.Extensions.Logging;

@@ -7,6 +7,7 @@ using CurrencyFetcher.Core.Models.Requests;
 using CurrencyFetcher.Core.Models.Responses;
 using CurrencyFetcher.Core.Services.Interfaces;
 using CurrencyFetcherApi.Controllers;
+using CurrencyFetcherApi.Services;
 using CurrencyFetcherApi.Tests.Wrappers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -68,15 +69,18 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
         private Mock<ICurrencyService> _currencyServiceMock;
         private Mock<LoggerWrapper<CurrencyController>> _loggerMock;
+        private Mock<IUserService> _userServiceMock;
         private CurrencyController _currencyController;
-        
+
         [SetUp]
         public void Setup()
         {
             _currencyServiceMock = new Mock<ICurrencyService>();
             _loggerMock = new Mock<LoggerWrapper<CurrencyController>>();
+            _userServiceMock = new Mock<IUserService>();
 
-            _currencyController = new CurrencyController(_currencyServiceMock.Object, _loggerMock.Object);
+            _currencyController =
+                new CurrencyController(_currencyServiceMock.Object, _loggerMock.Object, _userServiceMock.Object);
         }
 
         [Test]
