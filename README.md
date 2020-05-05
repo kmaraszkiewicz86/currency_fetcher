@@ -60,7 +60,6 @@ $ Password=> Currency123)(*
 - example of values
 ```sh
 {
-	"Email": "kmaraszkiewicz86@gmail.com",
 	"Username": "currency",
 	"Password": "Currency123)(*"
 }
