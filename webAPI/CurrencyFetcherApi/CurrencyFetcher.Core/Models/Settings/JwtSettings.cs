@@ -14,5 +14,11 @@
         /// The issuer site for token
         /// </summary>
         public string Issuer { get; set; }
+
+        /// <summary>
+        /// Time until token expires.
+        /// In hours
+        /// </summary>
+        public int ExpiresInHours { get; set; }
     }
 }

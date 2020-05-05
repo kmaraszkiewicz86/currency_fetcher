@@ -84,7 +84,7 @@ namespace CurrencyFetcherApi.Services
             var token = new JwtSecurityToken(_jwtSettings.Issuer,
                 _jwtSettings.Issuer,
                 _claims,
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddHours(_jwtSettings.ExpiresInHours),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
             );

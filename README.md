@@ -57,11 +57,20 @@ $ Password=> Currency123)(*
 
 1. /api/Token
 - method: POST
+- in default token expires in 7 hours
+- this can be change in appsettings file -> [appsettings] (Jwt.ExpiresInHours)
 - example of body:
 ```sh
 {
 	"Username": "currency",
 	"Password": "Currency123)(*"
+}
+```
+
+- example of response:
+```sh
+{
+  "token": "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjZjdhZDViMC05Y2Y5LTRjYjktOGYyOS0wZTgyOTdmMGVlMzciLCJqdGkiOiJmOWIzZjExYi1lODI4LTQyODktYjM0OC1iNzRiYzRjMWUxZDkiLCJleHAiOjE1ODg3MDU5MDYsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjQ0MzE3IiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NDQzMTcifQ.LCK99o3Fd8IviunPAbL2qWxXwSnTvA1C7X9l6ctRuO0"
 }
 ```
 
@@ -80,6 +89,41 @@ $ Password=> Currency123)(*
 "apiKey": "secret token string"
 }
 
+```
+- example of response:
+```sh
+[
+  {
+    "currencyBeingMeasured": "PLN",
+    "currencyMatched": "EUR",
+    "currencyValue": 3.99,
+    "dailyDataOfCurrency": "2010-05-14T00:00:00"
+  },
+  {
+    "currencyBeingMeasured": "PLN",
+    "currencyMatched": "EUR",
+    "currencyValue": 4.02,
+    "dailyDataOfCurrency": "2010-05-17T00:00:00"
+  },
+  {
+    "currencyBeingMeasured": "PLN",
+    "currencyMatched": "EUR",
+    "currencyValue": 4,
+    "dailyDataOfCurrency": "2010-05-18T00:00:00"
+  },
+  {
+    "currencyBeingMeasured": "PLN",
+    "currencyMatched": "EUR",
+    "currencyValue": 4.08,
+    "dailyDataOfCurrency": "2010-05-19T00:00:00"
+  },
+  {
+    "currencyBeingMeasured": "PLN",
+    "currencyMatched": "EUR",
+    "currencyValue": 4.19,
+    "dailyDataOfCurrency": "2010-05-20T00:00:00"
+  }
+]
 ```
 
 ### Techechnologies used in this project
@@ -119,4 +163,5 @@ apache 2.0
    [CurrencyFetcherApi.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.Tests>
    [CurrencyFetcher.Core]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcher.Core>
    [CurrencyFetcher.Core.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcher.Core.Tests>
+   [appsettings]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/appsettings.json>
 
