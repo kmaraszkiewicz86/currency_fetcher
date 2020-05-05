@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Services.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
@@ -18,6 +19,16 @@ namespace CurrencyFetcher.Core.Services.Implementations
         private const string WebServiceUrl = "https://sdw-wsrest.ecb.europa.eu";
 
         /// <summary>
+        /// <seealso cref="ILogger{CurrencyGetterService}"/>
+        /// </summary>
+        private ILogger<CurrencyGetterService> _logger;
+
+        public CurrencyGetterService(ILogger<CurrencyGetterService> logger)
+        {
+            _logger = logger;
+        }
+
+        /// <summary>
         /// Fetches currency data from foreign web service
         /// </summary>
         /// <param name="model"><see cref="CurrencyModel"/></param>
@@ -26,13 +37,15 @@ namespace CurrencyFetcher.Core.Services.Implementations
         {
             using (var client = new HttpClient())
             {
+                var startDate = model.StartDate;
+                var endDate = model.EndDate ?? model.StartDate;
+
+                var url =
+                    $"{WebServiceUrl}/service/data/EXR/D.{model.CurrencyBeingMeasured}.{model.CurrencyMatched}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly";
+
                 try
                 {
-                    var startDate = model.StartDate;
-                    var endDate = model.EndDate ?? model.StartDate; 
-
-                    HttpResponseMessage response = await client.GetAsync(
-                        $"{WebServiceUrl}/service/data/EXR/D.{model.CurrencyBeingMeasured}.{model.CurrencyMatched}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly");
+                    HttpResponseMessage response = await client.GetAsync(url);
                     
                     response.EnsureSuccessStatusCode();
 
@@ -41,7 +54,8 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 }
                 catch (HttpRequestException e)
                 {
-                    throw new BadRequestException($"Message: {e.Message}");
+                    _logger.LogError($"Error occurs trying to open {url} with message: {e.Message}");
+                    return string.Empty;
                 }
             }
         }

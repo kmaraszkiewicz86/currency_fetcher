@@ -19,8 +19,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
                 Token = "test_token"
             };
 
-        private AuthModel AuthModel =>
-            new AuthModel
+        private TokenAuthRequest AuthModel =>
+            new TokenAuthRequest
             {
                 Password = "test_password",
                 Username = "username"

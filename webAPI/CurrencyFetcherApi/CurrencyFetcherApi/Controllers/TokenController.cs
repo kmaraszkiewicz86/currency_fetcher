@@ -34,11 +34,11 @@ namespace CurrencyFetcherApi.Controllers
         /// <summary>
         /// Authenticates user and get token string
         /// </summary>
-        /// <param name="model"><see cref="AuthModel"/></param>
+        /// <param name="model"><see cref="TokenAuthRequest"/></param>
         /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] AuthModel model)
+        public async Task<IActionResult> Login([FromBody] TokenAuthRequest model)
         {
             return await OnActionAsync(async () =>
             {

@@ -5,7 +5,7 @@ namespace CurrencyFetcher.Core.Models.Requests
     /// <summary>
     /// Data for authenticates user
     /// </summary>
-    public class AuthModel
+    public class TokenAuthRequest
     {
         /// <summary>
         /// The username
