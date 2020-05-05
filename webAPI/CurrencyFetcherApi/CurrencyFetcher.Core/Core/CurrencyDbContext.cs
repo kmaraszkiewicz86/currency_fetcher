@@ -7,16 +7,32 @@ namespace CurrencyFetcher.Core.Core
 {
     public class CurrencyDbContext: IdentityDbContext<IdentityUser>
     {
+        /// <summary>
+        /// Reference with Logs table in database
+        /// </summary>
         public DbSet<Log> Logs { get; set; }
 
+        /// <summary>
+        /// Reference with Currencies table in database
+        /// </summary>
         public DbSet<Currency> Currencies { get; set; }
 
+        /// <summary>
+        /// Reference with CurrencyValues table in database
+        /// </summary>
         public DbSet<CurrencyValue> CurrencyValues { get; set; }
 
+        /// <summary>
+        /// Creates instance of class
+        /// </summary>
         public CurrencyDbContext(DbContextOptions options) : base(options)
         {
         }
 
+        /// <summary>
+        /// Add extended alters for migration
+        /// </summary>
+        /// <param name="builder"><see cref="ModelBuilder"/></param>
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Currency>()
