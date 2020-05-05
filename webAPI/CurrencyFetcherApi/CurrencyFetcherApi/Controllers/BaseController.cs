@@ -26,7 +26,7 @@ namespace CurrencyFetcherApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ValidateModelState());
+                    return BadRequest(new CurrencyErrorModel(ValidateModelState()));
                 }
 
                 return await action();

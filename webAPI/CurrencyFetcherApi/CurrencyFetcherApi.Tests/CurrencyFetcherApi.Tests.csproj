@@ -13,4 +13,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CurrencyFetcher.Core\CurrencyFetcher.Core.csproj" />
+    <ProjectReference Include="..\CurrencyFetcherApi\CurrencyFetcherApi.csproj" />
+  </ItemGroup>
+
 </Project>
