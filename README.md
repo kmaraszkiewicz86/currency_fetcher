@@ -14,7 +14,6 @@ To set up web service read below informations:
 * [CurrencyFetcherApi.Tests] - Unit tests project for CurrencyFetcherApi project
 * [CurrencyFetcher.Core] - Core project contains Services, model, entities, db context classes
 * [CurrencyFetcher.Core.Tests] - Unit tests project for CurrencyFetcher.Core project
-* [CurrencyFetcher.Core.Tests] - Unit tests project for CurrencyFetcher.Core project
 * [CurrencyFetcherApi.IntegrationTests] - Project with integration and performance tests
 * [IntegrationTests] - TextFixture of integrations tests
 * [PerformanceTests] - TextFixture of performance tests
