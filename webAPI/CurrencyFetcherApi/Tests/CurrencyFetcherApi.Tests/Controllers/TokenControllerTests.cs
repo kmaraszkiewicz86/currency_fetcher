@@ -42,7 +42,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         [Test]
         public void Login_SendValidCredentials_ReturnsToken()
         {
-            _userServiceMock.Setup(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()))
+            _userServiceMock.Setup(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(ExpectedResult));
 
             var result = _tokenController.Login(AuthModel).GetAwaiter().GetResult();
@@ -50,7 +50,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
 
-            _userServiceMock.Verify(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _userServiceMock.Verify(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
             okResult.Value.As<TokenModel>().Should().NotBeNull();
             okResult.Value.As<TokenModel>().Should().BeEquivalentTo(ExpectedResult);
@@ -59,7 +59,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         [Test]
         public void Login_SendInvalidCredentials_ReturnsBadRequest()
         {
-            _userServiceMock.Setup(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()))
+            _userServiceMock.Setup(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(Task.FromResult<TokenModel>(null));
 
             var result = _tokenController.Login(AuthModel).GetAwaiter().GetResult();
@@ -67,7 +67,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<BadRequestObjectResult>();
             var okResult = result as BadRequestObjectResult;
 
-            _userServiceMock.Verify(u => u.Authenticate(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _userServiceMock.Verify(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
             okResult.Value.As<CurrencyErrorModel>().Should().NotBeNull();
             okResult.Value.As<CurrencyErrorModel>().Should().BeEquivalentTo(new CurrencyErrorModel("Username or Password is invalid"));

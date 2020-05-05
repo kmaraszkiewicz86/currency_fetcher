@@ -14,16 +14,40 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CurrencyFetcherApi.Services
 {
+    /// <summary>
+    /// Contains user helper methods
+    /// </summary>
     public class UserService : IUserService
     {
+        /// <summary>
+        /// <see cref="UserManager{IdentityUser}"/>
+        /// </summary>
         private readonly UserManager<IdentityUser> _userManager;
+
+        /// <summary>
+        /// <see cref="SignInManager{IdentityUser}"/>
+        /// </summary>
         private readonly SignInManager<IdentityUser> _signInManager;
 
+        /// <summary>
+        /// <see cref="AppSettings"/>
+        /// </summary>
         private readonly AppSettings _appSettings;
+
+        /// <summary>
+        /// <see cref="JwtSettings"/>
+        /// </summary>
         private readonly JwtSettings _jwtSettings;
 
         private List<Claim> _claims;
 
+        /// <summary>
+        /// Creates instance of class
+        /// </summary>
+        /// <param name="appSettings"><see cref="AppSettings"/></param>
+        /// <param name="jwtSettings"><see cref="JwtSettings"/></param>
+        /// <param name="userManager"><see cref="UserManager{IdentityUser}"/></param>
+        /// <param name="signInManager"><see cref="SignInManager{IdentityUser}"/></param>
         public UserService(IOptions<AppSettings> appSettings,
             IOptions<JwtSettings> jwtSettings,
             UserManager<IdentityUser> userManager,
@@ -35,7 +59,13 @@ namespace CurrencyFetcherApi.Services
             _jwtSettings = jwtSettings.Value;
         }
 
-        public async Task<TokenModel> Authenticate(string login, string password)
+        /// <summary>
+        /// Authenticate and generate token string
+        /// </summary>
+        /// <param name="login">The username</param>
+        /// <param name="password">The password</param>
+        /// <returns>Token string</returns>
+        public async Task<TokenModel> AuthenticateAsync(string login, string password)
         {
             var user = await _userManager.FindByNameAsync(login);
 
@@ -65,7 +95,36 @@ namespace CurrencyFetcherApi.Services
             };
         }
 
-        public async Task CreateUser(UserModel model)
+        /// <summary>
+        /// Validate api key token
+        /// </summary>
+        /// <param name="token">Ap key token string</param>
+        public void ValidateCurrentToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidIssuer = _jwtSettings.Issuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Secret))
+                }, out SecurityToken validatedToken);
+            }
+            catch
+            {
+                throw new UnauthorizedException();
+            }
+        }
+
+        /// <summary>
+        /// Create new user
+        /// </summary>
+        /// <param name="model"><see cref="UserModel"/></param>
+        /// <returns><see cref="Task"/></returns>
+        public async Task CreateUserAsync(UserModel model)
         {
             var user = new IdentityUser
             {
@@ -79,6 +138,10 @@ namespace CurrencyFetcherApi.Services
                 throw new BadRequestException("Unable to create user");
         }
 
+        /// <summary>
+        /// Generate default claims for user
+        /// </summary>
+        /// <param name="user"></param>
         private void GenerateDefaultClaims(IdentityUser user)
         {
             _claims = new List<Claim>
@@ -88,6 +151,10 @@ namespace CurrencyFetcherApi.Services
             };
         }
 
+        /// <summary>
+        /// Merge user claims whit default claims
+        /// </summary>
+        /// <param name="user"></param>
         private async void MergeUserClaims(IdentityUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);

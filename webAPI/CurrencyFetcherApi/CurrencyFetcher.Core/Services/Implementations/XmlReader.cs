@@ -45,8 +45,8 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 {
                     currencyResults.Add(new CurrencyResult
                     {
-                        CurrencyBeingMeasured = model.CurrencyBeingMeasured,
-                        CurrencyMatched = model.CurrencyMatched,
+                        CurrencyBeingMeasured = model.CurrencyBeingMeasured.ToUpper(),
+                        CurrencyMatched = model.CurrencyMatched.ToUpper(),
                         CurrencyValue = currencyValue,
                         DailyDataOfCurrency = dailyDataOfCurrency
                     });

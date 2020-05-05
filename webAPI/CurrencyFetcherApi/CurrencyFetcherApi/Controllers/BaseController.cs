@@ -49,17 +49,22 @@ namespace CurrencyFetcherApi.Controllers
             }
             catch (NotFoundException err)
             {
-                _logger.LogInformation($"Occurs {nameof(NotFoundException)} with errorMessage => {err.Message}");
+                _logger.LogError($"Occurs {nameof(NotFoundException)} with errorMessage => {err.Message}");
                 return NotFound(new CurrencyErrorModel(err.Message));
+            }
+            catch (UnauthorizedException)
+            {
+                _logger.LogError($"User provide invalid token");
+                return Unauthorized();
             }
             catch (BadRequestException err)
             {
-                _logger.LogInformation($"Occurs {nameof(BadRequestException)} with errorMessage => {err.Message}");
+                _logger.LogError($"Occurs {nameof(BadRequestException)} with errorMessage => {err.Message}");
                 return BadRequest(new CurrencyErrorModel(err.Message));
             }
             catch (Exception err)
             {
-                _logger.LogInformation($"Occurs {nameof(Exception)} with errorMessage => {err.Message}");
+                _logger.LogError($"Occurs {nameof(Exception)} with errorMessage => {err.Message}");
                 return BadRequest(new CurrencyErrorModel("An unknown error occurs. Please contact to system administrator."));
             }
         }

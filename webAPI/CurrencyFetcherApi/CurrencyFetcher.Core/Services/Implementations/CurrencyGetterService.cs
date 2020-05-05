@@ -41,7 +41,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 var endDate = model.EndDate ?? model.StartDate;
 
                 var url =
-                    $"{WebServiceUrl}/service/data/EXR/D.{model.CurrencyBeingMeasured}.{model.CurrencyMatched}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly";
+                    $"{WebServiceUrl}/service/data/EXR/D.{model.CurrencyBeingMeasured?.ToUpper() ?? ""}.{model.CurrencyMatched?.ToUpper() ?? ""}.SP00.A?startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}&details=serieskeysonly";
 
                 try
                 {

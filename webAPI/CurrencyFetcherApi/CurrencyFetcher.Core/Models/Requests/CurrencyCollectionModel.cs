@@ -39,6 +39,12 @@ namespace CurrencyFetcher.Core.Models.Requests
         public DateTime? EndDate { get; set; }
 
         /// <summary>
+        /// The JWT token
+        /// </summary>
+        [Required]
+        public string ApiKey { get; set; }
+
+        /// <summary>
         /// Generate string from class properties
         /// </summary>
         /// <returns>The string from class properties</returns>

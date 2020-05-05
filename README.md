@@ -57,7 +57,7 @@ $ Password=> Currency123)(*
 
 1. /api/Token
 - method: POST
-- example of values
+- example of body:
 ```sh
 {
 	"Username": "currency",
@@ -67,7 +67,7 @@ $ Password=> Currency123)(*
 
 2. /api/Currency 
 - method: POST
-- example of values:
+- example of body:
 ```sh
  {
  	"CurrencyCodes": {
@@ -76,12 +76,10 @@ $ Password=> Currency123)(*
 		"NOK": "EUR"
 },
 "StartDate": "2010-05-28",
-"EndDate": "2010-06-30"
+"EndDate": "2010-06-30",
+"apiKey": "secret token string"
 }
-```
-and provide Authentication Token in request headers:
-``` sh
-Authentication: Bearer {token}
+
 ```
 
 ### Techechnologies used in this project
@@ -93,6 +91,7 @@ Dillinger uses a number of open source projects to work properly:
 to work with database with linq queries
 * [Entity Framework Migrations] - The solution to provide migrations that can build databases by code
 * [Sql Server] - The great database engine provide fexibility and is excelent to work with Enity Framework
+* [JWT] - JSON web token to provide login functionality
 * [nlog] - To better create logger functionlity in service
 * [nUnit] - The ane of the best solution for creating unit tests
 * [Moq] - To mock interfaces as testing object in test scenarioes
@@ -115,7 +114,9 @@ apache 2.0
    [nUnit]: <https://nunit.org/>
    [Moq]: <https://www.nuget.org/packages/moq/>
    [Swagger]: <https://swagger.io/>
+   [JWT]: <https://jwt.io/>
    [CurrencyFetcherApi]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcherApi>
    [CurrencyFetcherApi.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.Tests>
    [CurrencyFetcher.Core]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcher.Core>
    [CurrencyFetcher.Core.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcher.Core.Tests>
+

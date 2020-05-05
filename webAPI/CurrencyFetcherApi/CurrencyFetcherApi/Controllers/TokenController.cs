@@ -44,7 +44,7 @@ namespace CurrencyFetcherApi.Controllers
             {
                 _logger.LogInformation($"Executing TokenController.Login with values {model}");
 
-                var user = await _userService.Authenticate(model.Username, model.Password);
+                var user = await _userService.AuthenticateAsync(model.Username, model.Password);
 
                 if (user == null)
                     throw new BadRequestException("Username or Password is invalid");

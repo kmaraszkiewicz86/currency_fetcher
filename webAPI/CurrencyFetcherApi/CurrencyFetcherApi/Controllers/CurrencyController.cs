@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CurrencyFetcher.Core.Models.Requests;
 using CurrencyFetcher.Core.Services.Interfaces;
+using CurrencyFetcherApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,11 @@ namespace CurrencyFetcherApi.Controllers
     public class CurrencyController : BaseController<CurrencyController>
     {
         /// <summary>
+        /// <see cref="IUserService"/>
+        /// </summary>
+        private IUserService _userService;
+
+        /// <summary>
         /// <see cref="ICurrencyService"/>
         /// </summary>
         private readonly ICurrencyService _currencyService;
@@ -24,10 +30,12 @@ namespace CurrencyFetcherApi.Controllers
         /// </summary>
         /// <param name="currencyService"><see cref="ICurrencyService"/></param>
         /// <param name="logger"><see cref="ILogger"/></param>
-        public CurrencyController(ICurrencyService currencyService, ILogger<CurrencyController> logger)
+        /// <param name="userService"><see cref="IUserService"/></param>
+        public CurrencyController(ICurrencyService currencyService, ILogger<CurrencyController> logger, IUserService userService)
             : base(logger)
         {
             _currencyService = currencyService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -36,11 +44,12 @@ namespace CurrencyFetcherApi.Controllers
         /// <param name="collectionModel"><see cref="CurrencyCollectionModel"/></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Get([FromBody] CurrencyCollectionModel collectionModel)
         {
             return await OnActionAsync(async () =>
             {
+                _userService.ValidateCurrentToken(collectionModel.ApiKey);
+
                 _logger.LogInformation($"Executing CurrencyController.Get with values {collectionModel}");
                 return Ok(await _currencyService.GetCurrencyResults(collectionModel));
             });
