@@ -17,7 +17,7 @@ namespace CurrencyFetcherApi.AppStart
         /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddDependencyInjectionsCollection(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ICurrencyGetterService, CurrencyGetterService>();
             services.AddScoped<IXmlReader, XmlReader>();
             services.AddScoped<IHolidayChecker, HolidayChecker>();

@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using CurrencyFetcher.Core.Exceptions;
-using CurrencyFetcher.Core.Models.Requests;
 using CurrencyFetcher.Core.Models.Responses;
 using CurrencyFetcher.Core.Models.Settings;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +16,7 @@ namespace CurrencyFetcherApi.Services
     /// <summary>
     /// Contains user helper methods
     /// </summary>
-    public class UserService : IUserService
+    public class TokenService : ITokenService
     {
         /// <summary>
         /// <see cref="UserManager{IdentityUser}"/>
@@ -48,7 +47,7 @@ namespace CurrencyFetcherApi.Services
         /// <param name="jwtSettings"><see cref="JwtSettings"/></param>
         /// <param name="userManager"><see cref="UserManager{IdentityUser}"/></param>
         /// <param name="signInManager"><see cref="SignInManager{IdentityUser}"/></param>
-        public UserService(IOptions<AppSettings> appSettings,
+        public TokenService(IOptions<AppSettings> appSettings,
             IOptions<JwtSettings> jwtSettings,
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager)
@@ -117,25 +116,6 @@ namespace CurrencyFetcherApi.Services
             {
                 throw new UnauthorizedException();
             }
-        }
-
-        /// <summary>
-        /// Create new user
-        /// </summary>
-        /// <param name="model"><see cref="UserModel"/></param>
-        /// <returns><see cref="Task"/></returns>
-        public async Task CreateUserAsync(UserModel model)
-        {
-            var user = new IdentityUser
-            {
-                Email = model.Email,
-                UserName = model.Username
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-                throw new BadRequestException("Unable to create user");
         }
 
         /// <summary>

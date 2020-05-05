@@ -26,14 +26,14 @@ namespace CurrencyFetcherApi.Tests.Controllers
                 Username = "username"
             };
 
-        private Mock<IUserService> _userServiceMock;
+        private Mock<ITokenService> _userServiceMock;
         private Mock<ILogger<TokenController>> _loggerMock;
         private TokenController _tokenController;
 
         [SetUp]
         public void SetUp()
         {
-            _userServiceMock = new Mock<IUserService>();
+            _userServiceMock = new Mock<ITokenService>();
             _loggerMock = new Mock<ILogger<TokenController>>();
 
             _tokenController = new TokenController(_userServiceMock.Object, _loggerMock.Object);

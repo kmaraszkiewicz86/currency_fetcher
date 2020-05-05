@@ -69,7 +69,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
         private Mock<ICurrencyService> _currencyServiceMock;
         private Mock<LoggerWrapper<CurrencyController>> _loggerMock;
-        private Mock<IUserService> _userServiceMock;
+        private Mock<ITokenService> _userServiceMock;
         private CurrencyController _currencyController;
 
         [SetUp]
@@ -77,7 +77,7 @@ namespace CurrencyFetcherApi.Tests.Controllers
         {
             _currencyServiceMock = new Mock<ICurrencyService>();
             _loggerMock = new Mock<LoggerWrapper<CurrencyController>>();
-            _userServiceMock = new Mock<IUserService>();
+            _userServiceMock = new Mock<ITokenService>();
 
             _currencyController =
                 new CurrencyController(_currencyServiceMock.Object, _loggerMock.Object, _userServiceMock.Object);

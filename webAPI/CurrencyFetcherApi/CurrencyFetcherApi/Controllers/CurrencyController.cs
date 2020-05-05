@@ -2,7 +2,6 @@
 using CurrencyFetcher.Core.Models.Requests;
 using CurrencyFetcher.Core.Services.Interfaces;
 using CurrencyFetcherApi.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -16,9 +15,9 @@ namespace CurrencyFetcherApi.Controllers
     public class CurrencyController : BaseController<CurrencyController>
     {
         /// <summary>
-        /// <see cref="IUserService"/>
+        /// <see cref="ITokenService"/>
         /// </summary>
-        private IUserService _userService;
+        private readonly ITokenService _tokenService;
 
         /// <summary>
         /// <see cref="ICurrencyService"/>
@@ -30,12 +29,12 @@ namespace CurrencyFetcherApi.Controllers
         /// </summary>
         /// <param name="currencyService"><see cref="ICurrencyService"/></param>
         /// <param name="logger"><see cref="ILogger"/></param>
-        /// <param name="userService"><see cref="IUserService"/></param>
-        public CurrencyController(ICurrencyService currencyService, ILogger<CurrencyController> logger, IUserService userService)
+        /// <param name="tokenService"><see cref="ITokenService"/></param>
+        public CurrencyController(ICurrencyService currencyService, ILogger<CurrencyController> logger, ITokenService tokenService)
             : base(logger)
         {
             _currencyService = currencyService;
-            _userService = userService;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace CurrencyFetcherApi.Controllers
         {
             return await OnActionAsync(async () =>
             {
-                _userService.ValidateCurrentToken(collectionModel.ApiKey);
+                _tokenService.ValidateCurrentToken(collectionModel.ApiKey);
 
                 _logger.LogInformation($"Executing CurrencyController.Get with values {collectionModel}");
                 return Ok(await _currencyService.GetCurrencyResults(collectionModel));

@@ -16,19 +16,19 @@ namespace CurrencyFetcherApi.Controllers
     public class TokenController : BaseController<TokenController>
     {
         /// <summary>
-        /// <see cref="IUserService"/>
+        /// <see cref="ITokenService"/>
         /// </summary>
-        private readonly IUserService _userService;
+        private readonly ITokenService _tokenService;
 
         /// <summary>
         /// Creates instance of class
         /// </summary>
-        /// <param name="userService"><see cref="IUserService"/></param>
+        /// <param name="tokenService"><see cref="ITokenService"/></param>
         /// <param name="logger"><see cref="ILogger"/></param>
-        public TokenController(IUserService userService, ILogger<TokenController> logger) 
+        public TokenController(ITokenService tokenService, ILogger<TokenController> logger) 
             : base(logger)
         {
-            _userService = userService;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace CurrencyFetcherApi.Controllers
             {
                 _logger.LogInformation($"Executing TokenController.Login with values {model}");
 
-                var user = await _userService.AuthenticateAsync(model.Username, model.Password);
+                var user = await _tokenService.AuthenticateAsync(model.Username, model.Password);
 
                 if (user == null)
                     throw new BadRequestException("Username or Password is invalid");
