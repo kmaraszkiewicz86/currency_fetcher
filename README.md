@@ -62,8 +62,8 @@ $ Password=> Currency123)(*
 - example of body:
 ```sh
 {
-	"Username": "currency",
-	"Password": "Currency123)(*"
+  "Username": "currency",
+  "Password": "Currency123)(*"
 }
 ```
 
@@ -78,12 +78,12 @@ $ Password=> Currency123)(*
 - method: POST
 - example of body:
 ```sh
- {
- 	"CurrencyCodes": {
- 		"PLN": "EUR",
- 		"USD": "EUR",
-		"NOK": "EUR"
-},
+{
+  "CurrencyCodes": {
+    "PLN": "EUR",
+    "USD": "EUR",
+    "NOK": "EUR"
+  },
 "StartDate": "2010-05-28",
 "EndDate": "2010-06-30",
 "apiKey": "secret token string"
