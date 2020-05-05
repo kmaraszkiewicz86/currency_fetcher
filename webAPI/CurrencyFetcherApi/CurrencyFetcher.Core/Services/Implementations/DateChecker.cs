@@ -1,26 +1,22 @@
 ﻿using System;
 using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Services.Interfaces;
-using Nager.Date;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
     public class DateChecker: IDateChecker
     {
+        private readonly IHolidayChecker _holidayChecker;
+
+        public DateChecker(IHolidayChecker holidayChecker)
+        {
+            _holidayChecker = holidayChecker;
+        }
+
         public (DateTime StartDate, DateTime EndDate) SetCurrentDate(DateTime startDate, DateTime? endDate)
         {
-            var startDateTmp = startDate;
+            var startDateTmp = _holidayChecker.ReturnDateBeforeDayOff(startDate);
             var endDateTmp = endDate ?? startDate;
-
-            while (true)
-            {
-                if (!DateSystem.IsPublicHoliday(startDateTmp, CountryCode.PL) && !DateSystem.IsWeekend(startDateTmp, CountryCode.PL))
-                {
-                    break;
-                }
-
-                startDateTmp = startDateTmp.AddDays(-1);
-            }
 
             return (startDateTmp, endDateTmp);
         }

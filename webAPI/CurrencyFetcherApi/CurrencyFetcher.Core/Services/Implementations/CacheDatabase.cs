@@ -7,16 +7,19 @@ using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Models.Responses;
 using CurrencyFetcher.Core.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Nager.Date;
 
 namespace CurrencyFetcher.Core.Services.Implementations
 {
-    public class CacheDatabase: ICacheDatabase
+    public class CacheDatabase : ICacheDatabase
     {
-        private CurrencyDbContext _dbContext;
+        private readonly CurrencyDbContext _dbContext;
+        private readonly IHolidayChecker _holidayChecker;
 
-        public CacheDatabase(CurrencyDbContext dbContext)
+        public CacheDatabase(CurrencyDbContext dbContext, IHolidayChecker holidayChecker)
         {
             _dbContext = dbContext;
+            _holidayChecker = holidayChecker;
         }
 
         public async Task SaveAsync(CurrencyResult result)
@@ -27,7 +30,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
                 {
                     var currencyValue = await _dbContext.CurrencyValues.Include(c => c.Currency)
                         .FirstOrDefaultAsync(c =>
-                            c.DailyDataOfCurrency == result.DailyDataOfCurrency && 
+                            c.DailyDataOfCurrency == result.DailyDataOfCurrency &&
                             c.Currency.CurrencyBeingMeasured == result.CurrencyBeingMeasured &&
                             c.Currency.CurrencyMatched == result.CurrencyMatched);
 
@@ -74,11 +77,20 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
         public IEnumerable<CurrencyValue> GetAsync(CurrencyModel model)
         {
-            return _dbContext.CurrencyValues.Include(c => c.Currency)
+            var endDate = _holidayChecker.ReturnDateBeforeDayOff(model.EndDate ?? model.StartDate);
+
+            var results = _dbContext.CurrencyValues.Include(c => c.Currency)
                 .Where(c =>
                     (c.DailyDataOfCurrency >= model.StartDate && c.DailyDataOfCurrency <= model.EndDate) &&
                     c.Currency.CurrencyBeingMeasured == model.CurrencyBeingMeasured &&
                     c.Currency.CurrencyMatched == model.CurrencyMatched);
+
+            if (results.Max(r => r.DailyDataOfCurrency) != endDate)
+            {
+                return new List<CurrencyValue>();
+            }
+
+            return results;
         }
     }
 }
