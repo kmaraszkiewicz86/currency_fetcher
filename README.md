@@ -163,5 +163,5 @@ apache 2.0
    [CurrencyFetcherApi.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcherApi.Tests>
    [CurrencyFetcher.Core]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/CurrencyFetcher.Core>
    [CurrencyFetcher.Core.Tests]: <https://github.com/kmaraszkiewicz86/currency_fetcher/tree/master/webAPI/CurrencyFetcherApi/Tests/CurrencyFetcher.Core.Tests>
-   [appsettings]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/appsettings.json>
+   [appsettings]: <https://github.com/kmaraszkiewicz86/currency_fetcher/blob/master/webAPI/CurrencyFetcherApi/CurrencyFetcherApi/appsettings.json>
 
