@@ -59,7 +59,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
             if (endDate.HasValue && startDate > endDate)
             {
-                throw new BadRequestException("The endDate could not be after startDate date");
+                throw new BadRequestException("The endDate could not be before startDate date");
             }
         }
     }

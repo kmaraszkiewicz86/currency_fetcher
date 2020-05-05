@@ -25,6 +25,14 @@ namespace CurrencyFetcher.Core.Models.Responses
         }
 
         /// <summary>
+        /// Created for json deserialization
+        /// </summary>
+        public CurrencyErrorModel()
+        {
+            
+        }
+
+        /// <summary>
         /// Creates instance of class
         /// </summary>
         /// <param name="errorMessages">The list of error messages</param>

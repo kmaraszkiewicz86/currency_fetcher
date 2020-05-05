@@ -34,6 +34,12 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// <returns>returns xml body from web service</returns>
         public async Task<string> FetchDataAsync(CurrencyModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.CurrencyBeingMeasured) ||
+                string.IsNullOrWhiteSpace(model.CurrencyMatched))
+            {
+                return string.Empty;
+            }
+
             using (var client = new HttpClient())
             {
                 var startDate = model.StartDate;

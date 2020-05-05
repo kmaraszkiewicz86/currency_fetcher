@@ -101,6 +101,12 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// <returns><see cref="IEnumerable{CurrencyValue}"/></returns>
         public IEnumerable<CurrencyValue> GetAsync(CurrencyModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.CurrencyBeingMeasured) ||
+                string.IsNullOrWhiteSpace(model.CurrencyMatched))
+            {
+                return new List<CurrencyValue>();
+            }
+
             var endDate = _holidayChecker.ReturnDateBeforeDayOff(model.EndDate ?? model.StartDate);
 
             var results = _dbContext.CurrencyValues.Include(c => c.Currency)

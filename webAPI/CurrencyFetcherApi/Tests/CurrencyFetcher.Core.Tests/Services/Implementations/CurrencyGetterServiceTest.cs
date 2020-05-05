@@ -1,5 +1,4 @@
 ﻿using System;
-using CurrencyFetcher.Core.Exceptions;
 using CurrencyFetcher.Core.Models;
 using CurrencyFetcher.Core.Services.Implementations;
 using FluentAssertions;

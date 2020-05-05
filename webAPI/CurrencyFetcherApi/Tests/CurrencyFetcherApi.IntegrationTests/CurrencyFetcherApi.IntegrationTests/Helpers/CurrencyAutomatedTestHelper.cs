@@ -8,6 +8,7 @@ using CurrencyFetcher.Core.Core;
 using CurrencyFetcher.Core.Helpers;
 using CurrencyFetcher.Core.Models.Requests;
 using CurrencyFetcher.Core.Models.Responses;
+using CurrencyFetcher.Core.Services.Implementations;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -34,6 +35,8 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
         /// </summary>
         private TokenModel _tokenModel;
 
+        private HolidayChecker _holidayChecker;
+
         /// <summary>
         /// Creates instance of class
         /// </summary>
@@ -41,6 +44,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
         public CurrencyAutomatedTestHelper(HttpClient client)
         {
             _client = client;
+            _holidayChecker = new HolidayChecker();
         }
 
         /// <summary>
@@ -65,19 +69,28 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
         /// Call to /api/Currency and get currency data
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CurrencyResult>> GetCurrencyResults()
+        public async Task<IEnumerable<CurrencyResult>> GetCurrencyResultsAsync()
         {
-            CurrencyCollectionModel.ApiKey = _tokenModel.Token;
-
-            var currencyCollectionModelRequest =
-                new StringContent(JsonConvert.SerializeObject(CurrencyCollectionModel), Encoding.Default,
-                    "application/json");
-
-            var currencyResultsResponse = await _client.PostAsync("/api/Currency", currencyCollectionModelRequest);
+            HttpResponseMessage currencyResultsResponse = await PostCurrencyRequestAsync();
 
             currencyResultsResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
             return JsonConvert.DeserializeObject<IEnumerable<CurrencyResult>>(await currencyResultsResponse.Content.ReadAsStringAsync());
+        }
+
+        /// <summary>
+        /// Check currency endpoint validation
+        /// </summary>
+        /// <returns></returns>
+        public async Task<TModel> GetErrorModelsResults<TModel>(HttpStatusCode code)
+        {
+            HttpResponseMessage currencyResultsResponse = await PostCurrencyRequestAsync();
+
+            currencyResultsResponse.StatusCode.Should().Be(code);
+
+            var result = await currencyResultsResponse.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<TModel>(result);
         }
 
         /// <summary>
@@ -91,6 +104,8 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
 
             using (var context = new CurrencyDbContext(builder.Options))
             {
+                var startDate = _holidayChecker.ReturnDateBeforeDayOff(CurrencyCollectionModel.StartDate);
+
                 foreach (var currencyCode in CurrencyCollectionModel.CurrencyCodes)
                 {
                     if (string.IsNullOrWhiteSpace(currencyCode.Key) || string.IsNullOrWhiteSpace(currencyCode.Value))
@@ -101,7 +116,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
                     var itemsToRemove = context.CurrencyValues.Include(c => c.Currency).Where(
                         c => c.Currency.CurrencyBeingMeasured.ToLower() == currencyCode.Key.ToLower() &&
                              c.Currency.CurrencyMatched.ToLower() == currencyCode.Value.ToLower() &&
-                             (c.DailyDataOfCurrency >= CurrencyCollectionModel.StartDate &&
+                             (c.DailyDataOfCurrency >= startDate &&
                               c.DailyDataOfCurrency <= CurrencyCollectionModel.EndDate));
 
                     context.CurrencyValues.RemoveRange(itemsToRemove);
@@ -109,6 +124,22 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
                     await context.SaveChangesAsync();
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Post request to /api/Currency endpoint
+        /// </summary>
+        /// <returns><see cref="Task{HttpResponseMessage}"/></returns>
+        private async Task<HttpResponseMessage> PostCurrencyRequestAsync()
+        {
+            CurrencyCollectionModel.ApiKey = _tokenModel.Token;
+
+            var currencyCollectionModelRequest =
+                new StringContent(JsonConvert.SerializeObject(CurrencyCollectionModel), Encoding.Default,
+                    "application/json");
+
+            return await _client.PostAsync("/api/Currency", currencyCollectionModelRequest);
         }
     }
 }
