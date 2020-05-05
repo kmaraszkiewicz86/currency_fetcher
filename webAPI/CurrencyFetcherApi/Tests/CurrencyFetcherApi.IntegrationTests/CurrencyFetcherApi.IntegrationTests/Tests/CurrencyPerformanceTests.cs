@@ -55,7 +55,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         {
             var resultStringBuilder = new StringBuilder();
 
-            var currencyCollectionModel = new CurrencyCollectionModel
+            var currencyCollectionModel = new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                 {

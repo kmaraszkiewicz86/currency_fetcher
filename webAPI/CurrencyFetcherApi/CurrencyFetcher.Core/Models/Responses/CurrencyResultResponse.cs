@@ -5,7 +5,7 @@ namespace CurrencyFetcher.Core.Models.Responses
     /// <summary>
     /// The currency result fetched from web service
     /// </summary>
-    public class CurrencyResult
+    public class CurrencyResultResponse
     {
         /// <summary>
         /// the currency being measured (e.g.: US dollar - code USD)

@@ -42,7 +42,7 @@ namespace CurrencyFetcherApi.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new CurrencyErrorModel(ValidateModelState()));
+                    return BadRequest(new CurrencyErrorResponse(ValidateModelState()));
                 }
 
                 return await action();
@@ -50,7 +50,7 @@ namespace CurrencyFetcherApi.Controllers
             catch (NotFoundException err)
             {
                 _logger.LogError($"Occurs {nameof(NotFoundException)} with errorMessage => {err.Message}");
-                return NotFound(new CurrencyErrorModel(err.Message));
+                return NotFound(new CurrencyErrorResponse(err.Message));
             }
             catch (UnauthorizedException)
             {
@@ -60,12 +60,12 @@ namespace CurrencyFetcherApi.Controllers
             catch (BadRequestException err)
             {
                 _logger.LogError($"Occurs {nameof(BadRequestException)} with errorMessage => {err.Message}");
-                return BadRequest(new CurrencyErrorModel(err.Message));
+                return BadRequest(new CurrencyErrorResponse(err.Message));
             }
             catch (Exception err)
             {
                 _logger.LogError($"Occurs {nameof(Exception)} with errorMessage => {err.Message}");
-                return BadRequest(new CurrencyErrorModel("An unknown error occurs. Please contact to system administrator."));
+                return BadRequest(new CurrencyErrorResponse("An unknown error occurs. Please contact to system administrator."));
             }
         }
 

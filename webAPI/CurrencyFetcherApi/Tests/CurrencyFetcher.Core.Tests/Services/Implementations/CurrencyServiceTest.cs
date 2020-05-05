@@ -44,7 +44,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
                 .Setup(d => d.ValidateDate(It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .Throws(new BadRequestException("Test error message"));
 
-            Func<IEnumerable<CurrencyResult>> action = () => _currencyService.GetCurrencyResults(new CurrencyCollectionModel
+            Func<IEnumerable<CurrencyResultResponse>> action = () => _currencyService.GetCurrencyResultsAsync(new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                 {
@@ -85,7 +85,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
             _cacheDatabaseMock.Setup(c => c.GetAsync(It.IsAny<CurrencyModel>()))
                 .Returns(expectedValue);
 
-            List<CurrencyResult> currencyResults = _currencyService.GetCurrencyResults(new CurrencyCollectionModel
+            List<CurrencyResultResponse> currencyResults = _currencyService.GetCurrencyResultsAsync(new CurrencyCollectionRequest
 
             {
                 CurrencyCodes = new Dictionary<string, string>
@@ -98,7 +98,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
 
             _currencyGetterServiceMock.Verify(c => c.FetchDataAsync(It.IsAny<CurrencyModel>()), Times.Never);
             _xmlReaderMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyModel>(), It.IsAny<string>()), Times.Never);
-            _cacheDatabaseMock.Verify(c => c.SaveAsync(It.IsAny<CurrencyResult>()), Times.Never);
+            _cacheDatabaseMock.Verify(c => c.SaveAsync(It.IsAny<CurrencyResultResponse>()), Times.Never);
 
             currencyResults.Should().NotBeEmpty();
             currencyResults.ForEach(c =>
@@ -113,16 +113,16 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
         [Test]
         public void GetCurrencyResults_NotCachedData_ReturnsNoEmptyList()
         {
-            var expectedValue = new List<CurrencyResult>
+            var expectedValue = new List<CurrencyResultResponse>
             {
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
                     DailyDataOfCurrency = new DateTime(2009, 1,1),
                     CurrencyValue = 4.1m
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
@@ -146,9 +146,9 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
             _xmlReaderMock.Setup(x => x.GetCurrencyResults(It.IsAny<CurrencyModel>(), It.IsAny<string>()))
                 .Returns(expectedValue);
 
-            _cacheDatabaseMock.Setup(c => c.SaveAsync(It.IsAny<CurrencyResult>()));
+            _cacheDatabaseMock.Setup(c => c.SaveAsync(It.IsAny<CurrencyResultResponse>()));
 
-            List<CurrencyResult> currencyResults = _currencyService.GetCurrencyResults(new CurrencyCollectionModel
+            List<CurrencyResultResponse> currencyResults = _currencyService.GetCurrencyResultsAsync(new CurrencyCollectionRequest
 
             {
                 CurrencyCodes = new Dictionary<string, string>
@@ -161,7 +161,7 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
 
             _currencyGetterServiceMock.Verify(c => c.FetchDataAsync(It.IsAny<CurrencyModel>()), Times.Once);
             _xmlReaderMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyModel>(), It.IsAny<string>()), Times.Once);
-            _cacheDatabaseMock.Verify(c => c.SaveAsync(It.IsAny<CurrencyResult>()), Times.Exactly(2));
+            _cacheDatabaseMock.Verify(c => c.SaveAsync(It.IsAny<CurrencyResultResponse>()), Times.Exactly(2));
 
             currencyResults.Should().NotBeEmpty();
             currencyResults.Should().BeEquivalentTo(currencyResults);
@@ -180,10 +180,10 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
                 .Returns(new List<CurrencyValue>());
 
             _xmlReaderMock.Setup(x => x.GetCurrencyResults(It.IsAny<CurrencyModel>(), It.IsAny<string>()))
-                .Returns(new List<CurrencyResult>());
+                .Returns(new List<CurrencyResultResponse>());
 
 
-            List<CurrencyResult> currencyResults = _currencyService.GetCurrencyResults(new CurrencyCollectionModel
+            List<CurrencyResultResponse> currencyResults = _currencyService.GetCurrencyResultsAsync(new CurrencyCollectionRequest
 
             {
                 CurrencyCodes = new Dictionary<string, string>

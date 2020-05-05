@@ -20,31 +20,31 @@ namespace CurrencyFetcherApi.Tests.Controllers
     {
         private const string ErrorMessage = "Test error message";
 
-        private IEnumerable<CurrencyResult> _expectedResult =>
-            new List<CurrencyResult>
+        private IEnumerable<CurrencyResultResponse> _expectedResult =>
+            new List<CurrencyResultResponse>
             {
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
                     DailyDataOfCurrency = new DateTime(2010,1,1),
                     CurrencyValue = 4.236m
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
                     DailyDataOfCurrency = new DateTime(2010,1,2),
                     CurrencyValue = 4.236m
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
                     DailyDataOfCurrency = new DateTime(2010,1,3),
                     CurrencyValue = 4.236m
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "USD",
@@ -53,8 +53,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
                 }
             };
 
-        private CurrencyCollectionModel _model =>
-            new CurrencyCollectionModel
+        private CurrencyCollectionRequest _model =>
+            new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                 {
@@ -64,8 +64,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
                 EndDate = DateTime.Today
             };
 
-        private CurrencyErrorModel _errorModel => 
-            new CurrencyErrorModel(ErrorMessage);
+        private CurrencyErrorResponse _errorModel => 
+            new CurrencyErrorResponse(ErrorMessage);
 
         private Mock<ICurrencyService> _currencyServiceMock;
         private Mock<LoggerWrapper<CurrencyController>> _loggerMock;
@@ -86,24 +86,24 @@ namespace CurrencyFetcherApi.Tests.Controllers
         [Test]
         public void Get_SendValidData_ResultEmptyList()
         {
-            _currencyServiceMock.Setup(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()))
-                .Returns(Task.FromResult(new List<CurrencyResult>() as IEnumerable<CurrencyResult>));
+            _currencyServiceMock.Setup(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()))
+                .Returns(Task.FromResult(new List<CurrencyResultResponse>() as IEnumerable<CurrencyResultResponse>));
 
             var result = _currencyController.Get(_model).GetAwaiter().GetResult();
 
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
 
-            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
+            _currencyServiceMock.Verify(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()), Times.Once);
 
-            okResult.Value.As<IEnumerable<CurrencyResult>>().Should().BeEmpty();
+            okResult.Value.As<IEnumerable<CurrencyResultResponse>>().Should().BeEmpty();
 
         }
 
         [Test]
         public void Get_SendValidData_ResultNotEmptyList()
         {
-            _currencyServiceMock.Setup(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()))
+            _currencyServiceMock.Setup(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()))
                 .Returns(Task.FromResult(_expectedResult));
 
             var result = _currencyController.Get(_model).GetAwaiter().GetResult();
@@ -111,10 +111,10 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<OkObjectResult>();
             var okResult = result as OkObjectResult;
 
-            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
+            _currencyServiceMock.Verify(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()), Times.Once);
 
-            okResult.Value.As<IEnumerable<CurrencyResult>>().ToList().Should().NotBeNullOrEmpty();
-            okResult.Value.As<IEnumerable<CurrencyResult>>().ToList().Should().BeEquivalentTo(_expectedResult);
+            okResult.Value.As<IEnumerable<CurrencyResultResponse>>().ToList().Should().NotBeNullOrEmpty();
+            okResult.Value.As<IEnumerable<CurrencyResultResponse>>().ToList().Should().BeEquivalentTo(_expectedResult);
 
         }
 
@@ -134,13 +134,13 @@ namespace CurrencyFetcherApi.Tests.Controllers
         public void Get_SendValidData_ThrowsUnknownError()
         {
             CheckErrorMessageResponse<BadRequestObjectResult>(() => throw new Exception(ErrorMessage),
-                new CurrencyErrorModel("An unknown error occurs. Please contact to system administrator."));
+                new CurrencyErrorResponse("An unknown error occurs. Please contact to system administrator."));
         }
 
-        private void CheckErrorMessageResponse<TObjectResult>(Func<Task<IEnumerable<CurrencyResult>>> errorAction, CurrencyErrorModel errorModel = null)
+        private void CheckErrorMessageResponse<TObjectResult>(Func<Task<IEnumerable<CurrencyResultResponse>>> errorAction, CurrencyErrorResponse errorModel = null)
             where TObjectResult: ObjectResult
         {
-            _currencyServiceMock.Setup(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()))
+            _currencyServiceMock.Setup(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()))
                 .Returns(errorAction);
 
             var result = _currencyController.Get(_model).GetAwaiter().GetResult();
@@ -148,10 +148,10 @@ namespace CurrencyFetcherApi.Tests.Controllers
             result.Should().BeOfType<TObjectResult>();
             var errorResponse = result as TObjectResult;
 
-            _currencyServiceMock.Verify(c => c.GetCurrencyResults(It.IsAny<CurrencyCollectionModel>()), Times.Once);
+            _currencyServiceMock.Verify(c => c.GetCurrencyResultsAsync(It.IsAny<CurrencyCollectionRequest>()), Times.Once);
 
-            errorResponse.Value.As<CurrencyErrorModel>().Should().NotBeNull();
-            errorResponse.Value.As<CurrencyErrorModel>().Should().BeEquivalentTo(errorModel ?? _errorModel);
+            errorResponse.Value.As<CurrencyErrorResponse>().Should().NotBeNull();
+            errorResponse.Value.As<CurrencyErrorResponse>().Should().BeEquivalentTo(errorModel ?? _errorModel);
         }
 
         

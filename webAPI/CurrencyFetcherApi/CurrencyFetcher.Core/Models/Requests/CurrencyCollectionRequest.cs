@@ -8,7 +8,7 @@ namespace CurrencyFetcher.Core.Models.Requests
     /// <summary>
     /// Data about whats range of currency information will be fetched
     /// </summary>
-    public class CurrencyCollectionModel
+    public class CurrencyCollectionRequest
     {
         /// <summary>
         /// the currency being measured (e.g.: US dollar - code USD) as key value

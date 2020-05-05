@@ -17,8 +17,8 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
 {
     public class CacheDatabaseTest
     {
-        private CurrencyResult CurrencyResult =>
-            new CurrencyResult
+        private CurrencyResultResponse CurrencyResult =>
+            new CurrencyResultResponse
             {
                 CurrencyBeingMeasured = "PLN",
                 CurrencyMatched = "USD",

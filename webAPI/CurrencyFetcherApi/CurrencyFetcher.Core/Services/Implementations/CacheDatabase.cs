@@ -41,7 +41,7 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// </summary>
         /// <param name="result"><see cref="CurrencyModel"/></param>
         /// <returns></returns>
-        public async Task SaveAsync(CurrencyResult result)
+        public async Task SaveAsync(CurrencyResultResponse result)
         {
             using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {

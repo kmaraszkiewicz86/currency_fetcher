@@ -64,7 +64,7 @@ namespace CurrencyFetcherApi.Services
         /// <param name="login">The username</param>
         /// <param name="password">The password</param>
         /// <returns>Token string</returns>
-        public async Task<TokenModel> AuthenticateAsync(string login, string password)
+        public async Task<TokenResponse> AuthenticateAsync(string login, string password)
         {
             var user = await _userManager.FindByNameAsync(login);
 
@@ -88,7 +88,7 @@ namespace CurrencyFetcherApi.Services
                     Encoding.UTF8.GetBytes(_appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
             );
 
-            return new TokenModel
+            return new TokenResponse
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };

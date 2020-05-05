@@ -17,7 +17,7 @@ namespace CurrencyFetcher.Core.Services.Interfaces
         /// </summary>
         /// <param name="result"><see cref="CurrencyModel"/></param>
         /// <returns></returns>
-        Task SaveAsync(CurrencyResult result);
+        Task SaveAsync(CurrencyResultResponse result);
 
         /// <summary>
         /// Get caches data from database

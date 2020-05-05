@@ -17,6 +17,6 @@ namespace CurrencyFetcher.Core.Services.Interfaces
         /// <param name="model"><seealso cref="CurrencyModel"/></param>
         /// <param name="xmlBody">XmlBody fetched from web api</param>
         /// <returns></returns>
-        IEnumerable<CurrencyResult> GetCurrencyResults(CurrencyModel model, string xmlBody);
+        IEnumerable<CurrencyResultResponse> GetCurrencyResults(CurrencyModel model, string xmlBody);
     }
 }

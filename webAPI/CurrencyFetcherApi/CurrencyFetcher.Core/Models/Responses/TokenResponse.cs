@@ -3,7 +3,7 @@
     /// <summary>
     /// Token data that was generated from jwt service
     /// </summary>
-    public class TokenModel
+    public class TokenResponse
     {
         /// <summary>
         /// The token bearer auth string

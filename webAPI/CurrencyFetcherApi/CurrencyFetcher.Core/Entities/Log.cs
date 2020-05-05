@@ -42,8 +42,14 @@ namespace CurrencyFetcher.Core.Entities
         [MaxLength(250)]
         public string Logger { get; set; }
 
+        /// <summary>
+        /// The localization where log was logged
+        /// </summary>
         public string Callsite { get; set; }
 
+        /// <summary>
+        /// The <see cref="Exception"/>
+        /// </summary>
         public string Exception { get; set; }
     }
 }

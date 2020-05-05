@@ -40,17 +40,17 @@ namespace CurrencyFetcherApi.Controllers
         /// <summary>
         /// Get information about currency typed by user
         /// </summary>
-        /// <param name="collectionModel"><see cref="CurrencyCollectionModel"/></param>
+        /// <param name="collectionModel"><see cref="CurrencyCollectionRequest"/></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Get([FromBody] CurrencyCollectionModel collectionModel)
+        public async Task<IActionResult> Get([FromBody] CurrencyCollectionRequest collectionModel)
         {
             return await OnActionAsync(async () =>
             {
                 _tokenService.ValidateCurrentToken(collectionModel.ApiKey);
 
                 _logger.LogInformation($"Executing CurrencyController.Get with values {collectionModel}");
-                return Ok(await _currencyService.GetCurrencyResults(collectionModel));
+                return Ok(await _currencyService.GetCurrencyResultsAsync(collectionModel));
             });
         }
     }

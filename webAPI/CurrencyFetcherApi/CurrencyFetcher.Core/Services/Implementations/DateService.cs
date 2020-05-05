@@ -32,8 +32,8 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// <returns>Tuple of start and end date</returns>
         public (DateTime StartDate, DateTime EndDate) SetCorrectDate(DateTime startDate, DateTime? endDate)
         {
-            var startDateTmp = _holidayChecker.ReturnDateBeforeDayOff(startDate);
-            var endDateTmp = endDate ?? startDateTmp;
+            DateTime startDateTmp = _holidayChecker.ReturnDateBeforeDayOff(startDate);
+            DateTime endDateTmp = endDate ?? startDateTmp;
 
             return (startDateTmp, endDateTmp);
         }

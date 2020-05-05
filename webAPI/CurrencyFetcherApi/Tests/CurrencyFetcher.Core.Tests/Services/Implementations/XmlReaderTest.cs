@@ -25,16 +25,16 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
         [Test]
         public void GetCurrencyResults_WithNoEmptyResultFromApi_ReturnListOfItems()
         {
-            var expectedResults = new List<CurrencyResult>
+            var expectedResults = new List<CurrencyResultResponse>
             {
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "EUR",
                     DailyDataOfCurrency = new DateTime(2009,1,2),
                     CurrencyValue = 4.1638m
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "EUR",
@@ -58,16 +58,21 @@ namespace CurrencyFetcher.Core.Tests.Services.Implementations
         [Test]
         public void GetCurrencyResults_WithEmptyResultFromApi_ReturnEmptyList()
         {
-            var currencyResults = _xmlReader.GetCurrencyResults(new CurrencyModel
+            List<CurrencyResultResponse> currencyResults = _xmlReader.GetCurrencyResults(new CurrencyModel
             {
                 CurrencyBeingMeasured = "PLN",
                 CurrencyMatched = "EUR",
                 StartDate = new DateTime(1980, 1, 1),
                 EndDate = new DateTime(1980, 1, 5)
-            }, string.Empty);
+            }, string.Empty).ToList();
 
             currencyResults.Should().BeEmpty();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _xmlReader = null;
+        }
     }
 }

@@ -13,8 +13,8 @@ namespace CurrencyFetcher.Core.Services.Interfaces
         /// <summary>
         /// Get currency information
         /// </summary>
-        /// <param name="collectionModel"><see cref="CurrencyCollectionModel"/></param>
-        /// <returns>returns collection of <see cref="CurrencyResult"/> items</returns>
-        Task<IEnumerable<CurrencyResult>> GetCurrencyResults(CurrencyCollectionModel collectionModel);
+        /// <param name="collectionModel"><see cref="CurrencyCollectionRequest"/></param>
+        /// <returns>returns collection of <see cref="CurrencyResultResponse"/> items</returns>
+        Task<IEnumerable<CurrencyResultResponse>> GetCurrencyResultsAsync(CurrencyCollectionRequest collectionModel);
     }
 }

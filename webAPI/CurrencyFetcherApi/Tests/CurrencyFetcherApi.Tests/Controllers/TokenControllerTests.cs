@@ -13,8 +13,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
 {
     public class TokenControllerTests
     {
-        private TokenModel ExpectedResult =>
-            new TokenModel
+        private TokenResponse ExpectedResult =>
+            new TokenResponse
             {
                 Token = "test_token"
             };
@@ -52,15 +52,15 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
             _userServiceMock.Verify(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
-            okResult.Value.As<TokenModel>().Should().NotBeNull();
-            okResult.Value.As<TokenModel>().Should().BeEquivalentTo(ExpectedResult);
+            okResult.Value.As<TokenResponse>().Should().NotBeNull();
+            okResult.Value.As<TokenResponse>().Should().BeEquivalentTo(ExpectedResult);
         }
 
         [Test]
         public void Login_SendInvalidCredentials_ReturnsBadRequest()
         {
             _userServiceMock.Setup(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.FromResult<TokenModel>(null));
+                .Returns(Task.FromResult<TokenResponse>(null));
 
             var result = _tokenController.Login(AuthModel).GetAwaiter().GetResult();
 
@@ -69,8 +69,8 @@ namespace CurrencyFetcherApi.Tests.Controllers
 
             _userServiceMock.Verify(u => u.AuthenticateAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
 
-            okResult.Value.As<CurrencyErrorModel>().Should().NotBeNull();
-            okResult.Value.As<CurrencyErrorModel>().Should().BeEquivalentTo(new CurrencyErrorModel("Username or Password is invalid"));
+            okResult.Value.As<CurrencyErrorResponse>().Should().NotBeNull();
+            okResult.Value.As<CurrencyErrorResponse>().Should().BeEquivalentTo(new CurrencyErrorResponse("Username or Password is invalid"));
         }
     }
 }

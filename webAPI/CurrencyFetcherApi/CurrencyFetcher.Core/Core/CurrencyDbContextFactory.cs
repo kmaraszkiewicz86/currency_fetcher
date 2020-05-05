@@ -13,7 +13,7 @@ namespace CurrencyFetcher.Core.Core
         /// <summary>
         /// <see cref="IConfiguration"/>
         /// </summary>
-        public IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Creates instance of class

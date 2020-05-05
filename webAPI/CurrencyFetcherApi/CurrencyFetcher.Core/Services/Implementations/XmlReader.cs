@@ -19,9 +19,9 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// <param name="model"><seealso cref="CurrencyModel"/></param>
         /// <param name="xmlBody">XmlBody fetched from web api</param>
         /// <returns></returns>
-        public IEnumerable<CurrencyResult> GetCurrencyResults(CurrencyModel model, string xmlBody)
+        public IEnumerable<CurrencyResultResponse> GetCurrencyResults(CurrencyModel model, string xmlBody)
         {
-            var currencyResults = new List<CurrencyResult>();
+            var currencyResults = new List<CurrencyResultResponse>();
 
             if (string.IsNullOrWhiteSpace(xmlBody))
             {
@@ -36,14 +36,14 @@ namespace CurrencyFetcher.Core.Services.Implementations
 
             for (var index = 0; index < currencyValueXmlElements.Count; index++)
             {
-                var currencyValueXmlElement = currencyValueXmlElements[index];
-                var currencyDateXmlElement = currencyDateXmlElements[index];
+                XmlNode currencyValueXmlElement = currencyValueXmlElements[index];
+                XmlNode currencyDateXmlElement = currencyDateXmlElements[index];
 
                 //if generic:ObsValue == NaN skip that value
                 if (decimal.TryParse(currencyValueXmlElement.Attributes[0].Value, NumberStyles.Currency, CultureInfo.InvariantCulture, out var currencyValue) &&
                     DateTime.TryParse(currencyDateXmlElement.Attributes[0].Value, out var dailyDataOfCurrency))
                 {
-                    currencyResults.Add(new CurrencyResult
+                    currencyResults.Add(new CurrencyResultResponse
                     {
                         CurrencyBeingMeasured = model.CurrencyBeingMeasured.ToUpper(),
                         CurrencyMatched = model.CurrencyMatched.ToUpper(),

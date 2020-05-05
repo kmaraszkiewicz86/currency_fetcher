@@ -23,7 +23,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
         /// <summary>
         /// Data model for searching currency information
         /// </summary>
-        public CurrencyCollectionModel CurrencyCollectionModel { get; set; }
+        public CurrencyCollectionRequest CurrencyCollectionModel { get; set; }
 
         /// <summary>
         /// <see cref="HttpClient"/>
@@ -33,7 +33,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
         /// <summary>
         /// Storage JWT token string
         /// </summary>
-        private TokenModel _tokenModel;
+        private TokenResponse _tokenModel;
 
         private HolidayChecker _holidayChecker;
 
@@ -62,20 +62,20 @@ namespace CurrencyFetcherApi.IntegrationTests.Helpers
 
             tokenModelResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            _tokenModel = JsonConvert.DeserializeObject<TokenModel>(tokenModelResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult());
+            _tokenModel = JsonConvert.DeserializeObject<TokenResponse>(tokenModelResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult());
         }
 
         /// <summary>
         /// Call to /api/Currency and get currency data
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<CurrencyResult>> GetCurrencyResultsAsync()
+        public async Task<IEnumerable<CurrencyResultResponse>> GetCurrencyResultsAsync()
         {
             HttpResponseMessage currencyResultsResponse = await PostCurrencyRequestAsync();
 
             currencyResultsResponse.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            return JsonConvert.DeserializeObject<IEnumerable<CurrencyResult>>(await currencyResultsResponse.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<IEnumerable<CurrencyResultResponse>>(await currencyResultsResponse.Content.ReadAsStringAsync());
         }
 
         /// <summary>

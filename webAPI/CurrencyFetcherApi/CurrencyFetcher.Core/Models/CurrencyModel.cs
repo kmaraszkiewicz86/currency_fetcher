@@ -3,7 +3,7 @@
 namespace CurrencyFetcher.Core.Models
 {
     /// <summary>
-    /// Currency data for one instance of <see cref="CurrencyCollectionModel"/> model
+    /// Currency data for one instance of CurrencyCollectionResponse model
     /// </summary>
     public class CurrencyModel
     {

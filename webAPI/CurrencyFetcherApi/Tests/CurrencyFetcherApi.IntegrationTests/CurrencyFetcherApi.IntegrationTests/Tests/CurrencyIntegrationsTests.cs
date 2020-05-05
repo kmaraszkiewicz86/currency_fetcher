@@ -54,16 +54,16 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         [Test]
         public async Task WhenGetMultipleCurrency_ThenValidDataIsReturn()
         {
-            var expectedResults = new List<CurrencyResult>
+            var expectedResults = new List<CurrencyResultResponse>
             {
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "PLN",
                     CurrencyMatched = "EUR",
                     CurrencyValue = 4.1535m,
                     DailyDataOfCurrency = new DateTime(2008,12,31)
                 },
-                new CurrencyResult
+                new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = "NOK",
                     CurrencyMatched = "EUR",
@@ -74,7 +74,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
 
             try
             {
-                _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+                _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
                 {
                     CurrencyCodes = new Dictionary<string, string>
                     {
@@ -88,7 +88,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
                     EndDate = new DateTime(2009, 1, 1)
                 };
 
-                List<CurrencyResult> currencyResults = (await _currencyAutomatedTestHelper.GetCurrencyResultsAsync()).ToList();
+                List<CurrencyResultResponse> currencyResults = (await _currencyAutomatedTestHelper.GetCurrencyResultsAsync()).ToList();
 
                 currencyResults.Count.Should().Be(2);
                 currencyResults.Should().BeEquivalentTo(expectedResults);
@@ -106,7 +106,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         [Test]
         public async Task WhenSendNoStartDate_ThenCurrencyErrorModelReturn()
         {
-            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                     {
@@ -119,14 +119,12 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
                 EndDate = new DateTime(2009, 1, 1)
             };
 
-            ErrorModelCollection currencyResults =
-                await _currencyAutomatedTestHelper.GetErrorModelsResults<ErrorModelCollection>(HttpStatusCode
+            ModalErrorModel modalErrorModel =
+                await _currencyAutomatedTestHelper.GetErrorModelsResults<ModalErrorModel>(HttpStatusCode
                     .BadRequest);
 
-            string[] errors = currencyResults.Errors["StartDate"];
-            errors.Length.Should().Be(1);
-            errors.First().Should()
-                .Be("The field StartDate must be between 01.01.1980 00:00:00 and 03.04.2999 00:00:00.");
+            await ValidateModalErrorModelAsync("StartDate",
+                "The field StartDate must be between 01.01.1980 00:00:00 and 03.04.2999 00:00:00.");
         }
 
         /// <summary>
@@ -136,20 +134,13 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         [Test]
         public async Task WhenSendNoCurrencyCodes_ThenCurrencyErrorModelReturn()
         {
-            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
             {
                 StartDate = new DateTime(2009, 1, 1),
                 EndDate = new DateTime(2008, 1, 1)
             };
 
-            ErrorModelCollection currencyResults =
-                await _currencyAutomatedTestHelper.GetErrorModelsResults<ErrorModelCollection>(HttpStatusCode
-                    .BadRequest);
-
-            string[] errors = currencyResults.Errors["CurrencyCodes"];
-            errors.Length.Should().Be(1);
-            errors.First().Should()
-                .Be("The CurrencyCodes field is required.");
+            await ValidateModalErrorModelAsync("CurrencyCodes", "The CurrencyCodes field is required.");
         }
 
         /// <summary>
@@ -159,7 +150,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         [Test]
         public async Task WhenSendStartDateInFuture_ThenCurrencyErrorModelReturn()
         {
-            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                     {
@@ -173,12 +164,8 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
                 EndDate = new DateTime(2009, 1, 1)
             };
 
-            CurrencyErrorModel currencyErrorModel =
-                await _currencyAutomatedTestHelper.GetErrorModelsResults<CurrencyErrorModel>(HttpStatusCode
-                    .NotFound);
-
-            currencyErrorModel.ErrorMessages.Count.Should().Be(1);
-            currencyErrorModel.ErrorMessages[0].Should().Be("The startDate could not be after current date");
+            await ValidateCurrencyErrorResponseAsync(HttpStatusCode
+                .NotFound, "The startDate could not be after current date");
         }
 
         /// <summary>
@@ -189,7 +176,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         public async Task WhenSendEndDateInFuture_ThenCurrencyErrorModelReturn()
         {
 
-            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                     {
@@ -203,13 +190,8 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
                 EndDate = new DateTime(2099, 1, 1)
             };
 
-            CurrencyErrorModel currencyErrorModel =
-                await _currencyAutomatedTestHelper.GetErrorModelsResults<CurrencyErrorModel>(HttpStatusCode
-                    .NotFound);
-
-            currencyErrorModel.ErrorMessages.Count.Should().Be(1);
-            currencyErrorModel.ErrorMessages[0].Should().Be("The endDate could not be after current date");
-
+            await ValidateCurrencyErrorResponseAsync(HttpStatusCode
+                .NotFound, "The endDate could not be after current date");
         }
 
         /// <summary>
@@ -219,7 +201,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
         [Test]
         public async Task WhenSendEndDateBeforeStartDate_ThenCurrencyErrorModelReturn()
         {
-            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionModel
+            _currencyAutomatedTestHelper.CurrencyCollectionModel = new CurrencyCollectionRequest
             {
                 CurrencyCodes = new Dictionary<string, string>
                     {
@@ -233,14 +215,41 @@ namespace CurrencyFetcherApi.IntegrationTests.Tests
                 EndDate = new DateTime(2008, 1, 1)
             };
 
-            CurrencyErrorModel currencyErrorModel =
-                await _currencyAutomatedTestHelper.GetErrorModelsResults<CurrencyErrorModel>(HttpStatusCode
-                    .BadRequest);
-
-            currencyErrorModel.ErrorMessages.Count.Should().Be(1);
-            currencyErrorModel.ErrorMessages[0].Should().Be("The endDate could not be before startDate date");
+            await ValidateCurrencyErrorResponseAsync(HttpStatusCode
+                .BadRequest, "The endDate could not be before startDate date");
         }
 
+        /// <summary>
+        /// Validate currency error response
+        /// </summary>
+        /// <param name="expectedErrorMessage">The expected error message</param>
+        /// <returns></returns>
+        private async Task ValidateCurrencyErrorResponseAsync(HttpStatusCode code, string expectedErrorMessage)
+        {
+            CurrencyErrorResponse currencyErrorResponse =
+                await _currencyAutomatedTestHelper.GetErrorModelsResults<CurrencyErrorResponse>(code);
+
+            currencyErrorResponse.ErrorMessages.Count.Should().Be(1);
+            currencyErrorResponse.ErrorMessages[0].Should().Be(expectedErrorMessage);
+        }
+
+        /// <summary>
+        /// Validate modal error model
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="expectedErrorMessage">The expected error message</param>
+        /// <returns></returns>
+        private async Task ValidateModalErrorModelAsync(string type, string expectedErrorMessage)
+        {
+            ModalErrorModel modalErrorModel =
+                await _currencyAutomatedTestHelper.GetErrorModelsResults<ModalErrorModel>(HttpStatusCode
+                    .BadRequest);
+
+            string[] errors = modalErrorModel.Errors[type];
+            errors.Length.Should().Be(1);
+            errors.First().Should()
+                .Be(expectedErrorMessage);
+        }
 
         /// <summary>
         /// Disposing services

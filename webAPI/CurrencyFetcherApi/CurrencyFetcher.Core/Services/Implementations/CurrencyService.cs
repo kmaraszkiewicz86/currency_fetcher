@@ -53,25 +53,25 @@ namespace CurrencyFetcher.Core.Services.Implementations
         /// <summary>
         /// Get currency information
         /// </summary>
-        /// <param name="collectionModel"><see cref="CurrencyCollectionModel"/></param>
-        /// <returns>returns collection of <see cref="CurrencyResult"/> items</returns>
-        public async Task<IEnumerable<CurrencyResult>> GetCurrencyResults(CurrencyCollectionModel collectionModel)
+        /// <param name="currencyCollectionModel"><see cref="CurrencyCollectionRequest"/></param>
+        /// <returns>returns collection of <see cref="CurrencyResultResponse"/> items</returns>
+        public async Task<IEnumerable<CurrencyResultResponse>> GetCurrencyResultsAsync(CurrencyCollectionRequest currencyCollectionModel)
         {
-            var currencyModels = new List<CurrencyResult>();
+            var currencyResult = new List<CurrencyResultResponse>();
             var currencyModel = new CurrencyModel();
 
-            _dateChecker.ValidateDate(collectionModel.StartDate, collectionModel.EndDate);
-            (DateTime StartDate, DateTime EndDate) dateItems = _dateChecker.SetCorrectDate(collectionModel.StartDate, collectionModel.EndDate);
+            _dateChecker.ValidateDate(currencyCollectionModel.StartDate, currencyCollectionModel.EndDate);
+            (DateTime StartDate, DateTime EndDate) dateItems = _dateChecker.SetCorrectDate(currencyCollectionModel.StartDate, currencyCollectionModel.EndDate);
 
             currencyModel.StartDate = dateItems.StartDate;
             currencyModel.EndDate = dateItems.EndDate;
 
-            foreach (KeyValuePair<string, string> currencyCode in collectionModel.CurrencyCodes)
+            foreach (KeyValuePair<string, string> currencyCode in currencyCollectionModel.CurrencyCodes)
             {
                 currencyModel.CurrencyBeingMeasured = currencyCode.Key;
                 currencyModel.CurrencyMatched = currencyCode.Value;
 
-                List<CurrencyResult> currencyResults = _cacheDatabase.GetAsync(currencyModel).Select(c => new CurrencyResult
+                List<CurrencyResultResponse> currencyResults = _cacheDatabase.GetAsync(currencyModel).Select(c => new CurrencyResultResponse
                 {
                     CurrencyBeingMeasured = c.Currency.CurrencyBeingMeasured,
                     CurrencyMatched = c.Currency.CurrencyMatched,
@@ -84,16 +84,16 @@ namespace CurrencyFetcher.Core.Services.Implementations
                     var xmlBody = await _currencyGetterService.FetchDataAsync(currencyModel);
                     currencyResults = _xmlReader.GetCurrencyResults(currencyModel, xmlBody).ToList();
 
-                    foreach (var currencyResult in currencyResults)
+                    foreach (CurrencyResultResponse c in currencyResults)
                     {
-                        await _cacheDatabase.SaveAsync(currencyResult);
+                        await _cacheDatabase.SaveAsync(c);
                     }
                 }
 
-                currencyModels.AddRange(currencyResults);
+                currencyResult.AddRange(currencyResults);
             }
 
-            return currencyModels;
+            return currencyResult;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace CurrencyFetcherApi.Services
         /// <param name="login">The username</param>
         /// <param name="password">The password</param>
         /// <returns>Token string</returns>
-        Task<TokenModel> AuthenticateAsync(string username, string password);
+        Task<TokenResponse> AuthenticateAsync(string username, string password);
 
         /// <summary>
         /// Validate api key token

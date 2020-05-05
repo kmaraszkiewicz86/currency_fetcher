@@ -5,7 +5,7 @@ namespace CurrencyFetcherApi.IntegrationTests.Models
     /// <summary>
     /// Error Modal State response data model
     /// </summary>
-    public class ErrorModelCollection
+    public class ModalErrorModel
     {
         /// <summary>
         /// Collection of errors
